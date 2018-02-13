@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!-- mybatis控制台LOG输出
+		<setting name="logImpl" value="LOG4J2" />
+		 -->
+		<setting name="lazyLoadingEnabled" value="true" />
+		<setting name="aggressiveLazyLoading" value="false" />
+	</settings>
+	<typeAliases>
+		<!-- 
+		<typeAlias type="com.yl.picc.authority.entity.Role" alias="Role"/>
+		<typeAlias type="com.yl.picc.authority.entity.User" alias="User"/>
+		<typeAlias type="com.yl.picc.authority.entity.Menu" alias="Menu"/>
+		<typeAlias type="com.yl.picc.authority.entity.Organization" alias="Org"/>
+		<typeAlias type="com.yl.picc.common.dict.IntEnumTypeHandler" alias="IntEnumTypeHandler"/>
+		 -->
+	</typeAliases>
+</configuration>

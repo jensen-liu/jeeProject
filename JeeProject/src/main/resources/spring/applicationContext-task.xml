@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+              http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd"
+	default-lazy-init="true">
+
+	<description>定时任务作业配置文件</description>
+
+	<!-- namespace 方式 的便捷版 -->
+	<task:scheduler id="springScheduler" pool-size="20" />
+	<bean id="myJob" class="com.jensen.jeeproject.common.jobs.MyJob"></bean>
+	<!-- 开启Spring Card "0 0 3 * * *" 每天凌晨 01:00 执行一次 -->
+	<task:annotation-driven />
+	<task:scheduled-tasks scheduler="springScheduler">
+		<task:scheduled ref="myJob" method="doJob" cron="0 5 0 * * ?" />
+	</task:scheduled-tasks>
+
+</beans>

@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+	<session>
+		<maxIdleTimeInMillis>3600000</maxIdleTimeInMillis>
+	</session>
+	<file>
+		<uploadPath>/ASSETS/File/
+		</uploadPath>
+		<exportPath>/ASSETS/File/
+		</exportPath>
+	</file>
+	<template>
+		<import>
+			<aims>
+				<header>机构代码</header>
+				<header>机构名称</header>
+				<header>月份</header>
+				<header>任务目标</header>
+			</aims>
+			<newCarAims>
+				<header>机构代码</header>
+				<header>机构名称</header>
+				<header>月份</header>
+				<header>任务目标</header>
+			</newCarAims>
+			<panoramaNum>
+				<header>机构代码</header>
+				<header>机构名称</header>
+				<header>月份</header>
+				<header>二网全景图数量</header>
+			</panoramaNum>
+
+			<partner>
+				<header>合作商代码</header>
+				<header>合作商名称</header>
+				<header>推荐送修码</header>
+				<header>归属机构</header>
+				<header>联系人</header>
+				<header>联系电话</header>
+				<header>车商类型</header>
+				<header>品牌</header>
+				<header>集团</header>
+			</partner>
+			<vehicleType>
+				<header>车辆类型名称</header>
+				<header>车辆类型代码</header>
+			</vehicleType>
+			<lossratio>
+				<header>合作商代码</header>
+				<header>合作商名称</header>
+				<header>月份</header>
+				<header>赔付率</header>
+			</lossratio>
+		</import>
+		<export>
+			<rowMaxCount>
+				5000
+			</rowMaxCount>
+			<fixedLossList>
+				<header>报案号</header>
+				<header>业务归属机构</header>
+				<header>案件性质</header>
+				<header>损失类别</header>
+				<header>定损方式</header>
+				<header>车牌号</header>
+				<header>定损员代码</header>
+				<header>定损员姓名</header>
+				<header>定损员归属机构</header>
+				<header>核损换件金额</header>
+				<header>核损合计金额</header>
+				<header>修理厂类型</header>
+				<header>修理厂代码</header>
+				<header>修理厂名称</header>
+				<header>定损完成日期</header>
+				<header>客户群分类</header>
+				<header>损失方标志</header>
+				<header>查勘员代码</header>
+				<header>查勘员姓名</header>
+			</fixedLossList>
+
+			<renewalList>
+				<cn>机构代码 </cn>
+				<en>Comcode</en>
+				<sql>tmp_1.`Comcode` AS Comcode</sql>
+
+				<cn>单位 </cn>
+				<en>comName</en>
+				<sql><![CDATA[(SELECT `name` FROM picc_organization WHERE SUBSTR(`code`$dh1$dh6) = tmp_1.`comcode_sx`) AS comName]]></sql>
+
+				<cn>车牌号 </cn>
+				<en>LicenseNo</en>
+				<sql>tmp_1.`LicenseNo` AS LicenseNo</sql>
+
+				<cn>车架号 </cn>
+				<en>FrameNo</en>
+				<sql>tmp_1.`FrameNo` AS FrameNo</sql>
+
+				<cn>投保人</cn>
+				<en>tbr</en>
+				<sql>tmp_1.tbr AS tbr</sql>
+
+				<cn>被保险人 </cn>
+				<en>bbxr</en>
+				<sql>tmp_1.`bbxr` AS bbxr</sql>
+
+				<cn>代理  </cn>
+				<en>MonopolyCode</en>
+				<sql>tmp_1.`MonopolyCode` AS MonopolyCode</sql>
+
+				<cn>专管专营 </cn>
+				<en>MonopolyName</en>
+				<sql>tmp_1.`MonopolyName` AS MonopolyName</sql>
+
+				<cn>商业险投保单号 </cn>
+				<en>DZAProposalNo</en>
+				<sql><![CDATA[(SELECT xb.`ProposalNo` FROM tmp_xubaoyewu3 AS xb WHERE xb.`StartDate` = tmp_1.`StartDate` AND xb.`FrameNo` = tmp_1.`FrameNo` AND xb.`RiskCode` = 'DZA') AS DZAProposalNo]]></sql>
+
+				<cn>交强险投保单号</cn>
+				<en>DAAProposalNo</en>
+				<sql>tmp_1.`ProposalNo` AS DAAProposalNo</sql>
+
+				<cn>商业险保单号</cn>
+				<en>DZAPolicyNo</en>
+				<sql><![CDATA[(SELECT xb.`PolicyNo` FROM tmp_xubaoyewu4 AS xb WHERE xb.`StartDate` = tmp_1.`StartDate` AND xb.`FrameNo` = tmp_1.`FrameNo` AND xb.`RiskCode` = 'DZA') AS DZAPolicyNo]]></sql>
+
+				<cn>交强险保单号 </cn>
+				<en>DAAPolicyNo</en>
+				<sql>tmp_1.`PolicyNo` AS DAAPolicyNo</sql>
+
+				<cn>签单日期  </cn>
+				<en>OperateDate</en>
+				<sql>tmp_1.`OperateDate` AS OperateDate</sql>
+
+				<cn>起保日期  </cn>
+				<en>StartDate</en>
+				<sql>tmp_1.`StartDate` AS StartDate</sql>
+
+				<cn>终保日期 </cn>
+				<en>EndDate</en>
+				<sql>tmp_1.`EndDate` AS EndDate</sql>
+
+				<cn>初登日期  </cn>
+				<en>EnrollDate</en>
+				<sql>tmp_1.`EnrollDate` AS EnrollDate</sql>
+
+				<cn>商业险保费 </cn>
+				<en>SumPremium</en>
+				<sql><![CDATA[(SELECT xb.`SumPremium` FROM tmp_xubaoyewu5 AS xb WHERE xb.`StartDate` = tmp_1.`StartDate` AND xb.`FrameNo` = tmp_1.`FrameNo` AND xb.`RiskCode` = 'DAA') AS SumPremium]]></sql>
+
+				<cn>商业险净保费 </cn>
+				<en>NetSumPremium</en>
+				<sql><![CDATA[(SELECT xb.`NetSumPremium` FROM tmp_xubaoyewu6 AS xb WHERE xb.`StartDate` = tmp_1.`StartDate` AND xb.`FrameNo` = tmp_1.`FrameNo` AND xb.`RiskCode` = 'DAA') AS NetSumPremium]]></sql>
+
+				<cn>新车购置价  </cn>
+				<en>chejia</en>
+				<sql>tmp_1.`chejia` AS chejia</sql>
+
+				<cn>业务来源 </cn>
+				<en>qudao</en>
+				<sql>tmp_1.`qudao` AS qudao</sql>
+
+				<cn>客户群  </cn>
+				<en>kehuqun</en>
+				<sql>tmp_1.`kehuqun` AS kehuqun</sql>
+
+				<cn>车辆类型 </cn>
+				<en>CarKindCode</en>
+				<sql>tmp_1.`CarKindCode` AS CarKindCode</sql>
+
+				<cn>续转保类型 </cn>
+				<en>OthFlag</en>
+				<sql>tmp_1.`OthFlag` AS OthFlag</sql>
+
+				<cn>是否新车</cn>
+				<en>NewCarFlag</en>
+				<sql>tmp_1.`NewCarFlag` AS NewCarFlag</sql>
+
+				<cn>车辆品牌型号 </cn>
+				<en>BrandName</en>
+				<sql>tmp_1.`BrandName` AS BrandName</sql>
+
+				<cn>经办人  </cn>
+				<en>HandlerCode</en>
+				<sql>tmp_1.`HandlerCode` AS HandlerCode</sql>
+
+				<cn>归属人 </cn>
+				<en>Handler1Code</en>
+				<sql>tmp_1.`Handler1Code` AS Handler1Code</sql>
+
+				<cn>续保机构代码 </cn>
+				<en>xbComCode</en>
+				<sql>tmp_2.`Comcode` AS xbComCode</sql>
+
+				<cn>续保单位 </cn>
+				<en>xbComName</en>
+				<sql><![CDATA[(SELECT `name` FROM picc_organization WHERE SUBSTR(`code`$dh1$dh6) = tmp_2.`comcode_sx`) AS xbComName]]></sql>
+
+				<cn>续保商业险保单号 </cn>
+				<en>xbDZAPolicyNo</en>
+				<sql><![CDATA[(SELECT xb.`PolicyNo` FROM tmp_xubaoyewu7 AS xb WHERE xb.`StartDate` = tmp_2.`StartDate` AND xb.`FrameNo` = tmp_2.`FrameNo` AND xb.`RiskCode` = 'DZA') AS xbDZAPolicyNo]]></sql>
+
+				<cn>续保交强险保单号 </cn>
+				<en>xbDAAPolicyNo</en>
+				<sql>tmp_2.`PolicyNo` AS xbDAAPolicyNo</sql>
+
+				<cn>续保签单日期 </cn>
+				<en>xbOperateDate</en>
+				<sql>tmp_2.`OperateDate` AS xbOperateDate</sql>
+
+				<cn>续保起保日期</cn>
+				<en>xbStartDate</en>
+				<sql>tmp_2.`StartDate` AS xbStartDate</sql>
+
+				<cn>续保终保日期  </cn>
+				<en>xbEndDate</en>
+				<sql>tmp_2.`EndDate` AS xbEndDate</sql>
+
+				<cn>续保保费</cn>
+				<en>xbSumPremium</en>
+				<sql>tmp_2.`SumPremium` AS xbSumPremium</sql>
+			</renewalList>
+
+			<cxda>
+				<code>A01</code>
+				<code>B01</code>
+				<code>B02</code>
+				<code>B11</code>
+				<code>B12</code>
+				<code>B13</code>
+				<code>B21</code>
+				<code>B91</code>
+				<code>C01</code>
+				<code>C02</code>
+				<code>C03</code>
+				<code>C04</code>
+				<code>C11</code>
+				<code>C20</code>
+				<code>C22</code>
+				<code>C23</code>
+				<code>C24</code>
+				<code>C25</code>
+				<code>C26</code>
+				<code>C27</code>
+				<code>C28</code>
+				<code>C29</code>
+				<code>C30</code>
+				<code>C31</code>
+				<code>C39</code>
+				<code>C41</code>
+				<code>C42</code>
+				<code>C43</code>
+				<code>C44</code>
+				<code>C45</code>
+				<code>C46</code>
+				<code>C47</code>
+				<code>C48</code>
+				<code>C49</code>
+				<code>C50</code>
+				<code>C51</code>
+				<code>C52</code>
+				<code>C53</code>
+				<code>C54</code>
+				<code>C55</code>
+				<code>C56</code>
+				<code>C57</code>
+				<code>C58</code>
+				<code>C61</code>
+				<code>C69</code>
+				<code>C90</code>
+				<code>D01</code>
+				<code>D02</code>
+				<code>D03</code>
+				<code>E01</code>
+				<code>E11</code>
+				<code>E12</code>
+				<code>Z99</code>
+
+				<name>客车</name>
+				<name>货车</name>
+				<name>半挂牵引车</name>
+				<name>三轮汽车</name>
+				<name>低速货车</name>
+				<name>客货两用车</name>
+				<name>自卸货车</name>
+				<name>货车挂车</name>
+				<name>油罐车</name>
+				<name>汽罐车 </name>
+				<name>液罐车</name>
+				<name>冷藏车</name>
+				<name>罐车挂车</name>
+				<name>推土车 </name>
+				<name>清障车</name>
+				<name>清扫车</name>
+				<name>清洁车     </name>
+				<name>起重机     </name>
+				<name>装卸车     </name>
+				<name>升降机     </name>
+				<name>混凝土搅拌车  </name>
+				<name>挖掘机     </name>
+				<name>专业拖车   </name>
+				<name>特种车二类挂车</name>
+				<name>特种车二类其他</name>
+				<name>电视转播车 </name>
+				<name>消防车     </name>
+				<name>医疗车     </name>
+				<name>油气田操作用车</name>
+				<name>压路车     </name>
+				<name>矿山车     </name>
+				<name>运钞车     </name>
+				<name>救护车     </name>
+				<name>监测车     </name>
+				<name>雷达车     </name>
+				<name>X光检查车  </name>
+				<name>电信抢修车 </name>
+				<name>电力抢修车 </name>
+				<name>专业净水车 </name>
+				<name>保温车     </name>
+				<name>邮电车     </name>
+				<name>警用特种车 </name>
+				<name>混凝土泵车 </name>
+				<name>特种车三类挂车</name>
+				<name>特种车三类其他</name>
+				<name>集装箱托头 </name>
+				<name>摩托车     </name>
+				<name>正三轮摩托车  </name>
+				<name>侧三轮摩托车  </name>
+				<name>拖拉机     </name>
+				<name>联合收割机 </name>
+				<name>变形拖拉机/其他</name>
+				<name>其他车辆   </name>
+
+			</cxda>
+		</export>
+	</template>
+</configuration>

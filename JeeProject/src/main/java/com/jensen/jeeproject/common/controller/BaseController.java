@@ -11,14 +11,6 @@ import com.jensen.jeeproject.common.util.SpringContextUtil;
 
 public abstract class BaseController {
 
-	private static final String MESSAGE_PROP_NAME = "message";
-
-	protected String getPropMessage(String key) {
-
-		PropertyConfigurer configurer = (PropertyConfigurer) SpringContextUtil.getBean("propertyConfigurer");
-		return configurer.getPropertyValue(MESSAGE_PROP_NAME, key);
-	}
-
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
 		// String类型转换，将所有传递进来的String进行HTML编码，防止XSS攻击

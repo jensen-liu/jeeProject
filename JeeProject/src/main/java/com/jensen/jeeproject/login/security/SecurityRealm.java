@@ -8,7 +8,9 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -17,7 +19,12 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.jensen.jeeproject.common.enumeration.UserStateEnum;
+import com.jensen.jeeproject.system.entity.User;
+import com.jensen.jeeproject.system.service.UserService;
 
 /**
  * 用户身份验证,授权 Realm 组件
@@ -27,6 +34,9 @@ import org.springframework.stereotype.Component;
  **/
 @Component(value = "securityRealm")
 public class SecurityRealm extends AuthorizingRealm {
+
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * 权限检查
@@ -55,26 +65,19 @@ public class SecurityRealm extends AuthorizingRealm {
 
 		String loginName = String.valueOf(token.getPrincipal());
 		// 通过数据库进行验证
-		// User user = userService.getUserByLoginName(loginName);
-		// if (user != null) {
-		// if (IsEnum.NO.getId().equals(user.getIsEnable())) {
-		// throw new DisabledAccountException("您的帐号已被禁用，无法登录！");
-		// }
-		// ShiroUser shiroUser = new ShiroUser(user);
-		// ByteSource credentialsSalt = ByteSource.Util.bytes(user.getSalt());
-		// SimpleAuthenticationInfo authenticationInfo = new
-		// SimpleAuthenticationInfo(shiroUser, user.getPassWord(),
-		// credentialsSalt, getName());
-		// return authenticationInfo;
-		// } else {
-		// throw new UnknownAccountException("帐户或密码不正确！");
-		// }
-
-		ShiroUser shiroUser = new ShiroUser();
-		ByteSource credentialsSalt = ByteSource.Util.bytes("");
-		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(shiroUser, "", credentialsSalt,
-				getName());
-		return authenticationInfo;
+		User user = userService.getUserByLoginName(loginName);
+		if (user != null) {
+			if (UserStateEnum.DISABLE.equals(user.getState())) {
+				throw new DisabledAccountException();
+			}
+			ShiroUser shiroUser = new ShiroUser(user);
+			ByteSource credentialsSalt = ByteSource.Util.bytes(user.getSalt());
+			SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(shiroUser, user.getPassword(),
+					credentialsSalt, getName());
+			return authenticationInfo;
+		} else {
+			throw new UnknownAccountException();
+		}
 	}
 
 	public static class ShiroUser implements Serializable {
@@ -82,11 +85,24 @@ public class SecurityRealm extends AuthorizingRealm {
 		private static final long serialVersionUID = -1373760761780840081L;
 		private String id;
 		private String loginName;
-		private String orgId;
-		private String orgPath;
+		private String officeId;
+		private String officePath;
 
 		public ShiroUser() {
 
+		}
+
+		public ShiroUser(User user) {
+
+			init(user);
+		}
+
+		public void init(User user) {
+
+			this.id = user.getId();
+			this.loginName = user.getLoginName();
+			this.officeId = user.getOffice().getId();
+			this.officePath = user.getOffice().getPath();
 		}
 
 		public static ShiroUser getInstance() {
@@ -111,20 +127,20 @@ public class SecurityRealm extends AuthorizingRealm {
 			this.id = id;
 		}
 
-		public String getOrgId() {
-			return orgId;
+		public String getOfficeId() {
+			return officeId;
 		}
 
-		public void setOrgId(String orgId) {
-			this.orgId = orgId;
+		public void setOfficeId(String officeId) {
+			this.officeId = officeId;
 		}
 
-		public String getOrgPath() {
-			return orgPath;
+		public String getOfficePath() {
+			return officePath;
 		}
 
-		public void setOrgPath(String orgPath) {
-			this.orgPath = orgPath;
+		public void setOfficePath(String officePath) {
+			this.officePath = officePath;
 		}
 
 		/**

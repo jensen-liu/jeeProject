@@ -3,12 +3,21 @@ package com.jensen.jeeproject.system.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.shiro.crypto.hash.SimpleHash;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.jensen.jeeproject.common.entity.DataEntity;
+import com.jensen.jeeproject.common.enumeration.SwitchEnum;
 import com.jensen.jeeproject.common.enumeration.UserStateEnum;
+import com.jensen.jeeproject.system.vo.UserInsertVO;
+import com.jensen.jeeproject.system.vo.UserUpdateVO;
 
 /**
  * 用户类
@@ -54,7 +63,7 @@ public class User extends DataEntity implements Serializable {
 	/**
 	 * 用户状态 0=启用，1=禁用
 	 */
-	private UserStateEnum state;
+	private Integer state;
 	/**
 	 * 邮箱
 	 */
@@ -75,10 +84,6 @@ public class User extends DataEntity implements Serializable {
 	 * 最后登陆日期
 	 */
 	private Date loginDate;
-	/**
-	 * 是否允许登陆
-	 */
-	private String loginFlag;
 	/**
 	 * 头像
 	 */
@@ -156,11 +161,11 @@ public class User extends DataEntity implements Serializable {
 		this.office = office;
 	}
 
-	public UserStateEnum getState() {
+	public Integer getState() {
 		return state;
 	}
 
-	public void setState(UserStateEnum state) {
+	public void setState(Integer state) {
 		this.state = state;
 	}
 
@@ -204,14 +209,6 @@ public class User extends DataEntity implements Serializable {
 		this.loginDate = loginDate;
 	}
 
-	public String getLoginFlag() {
-		return loginFlag;
-	}
-
-	public void setLoginFlag(String loginFlag) {
-		this.loginFlag = loginFlag;
-	}
-
 	public String getPhoto() {
 		return photo;
 	}
@@ -244,18 +241,99 @@ public class User extends DataEntity implements Serializable {
 		this.roleList = roleList;
 	}
 
-	public void changeState() {
-		switch (state) {
-		case ENABLE:
-			this.state = UserStateEnum.DISABLE;
-			break;
-		case DISABLE:
-			this.state = UserStateEnum.ENABLE;
-			break;
-		default:
-			this.state = UserStateEnum.DISABLE;
-			break;
-		}
+	// public void changeState() {
+	// switch (state) {
+	// case ENABLE:
+	// this.state = UserStateEnum.DISABLE;
+	// break;
+	// case DISABLE:
+	// this.state = UserStateEnum.ENABLE;
+	// break;
+	// default:
+	// this.state = UserStateEnum.DISABLE;
+	// break;
+	// }
+	// }
+
+	public static User getInstance() {
+
+		return new User();
 	}
 
+	public static User getInstance(UserInsertVO vo) {
+
+		User user = new User();
+		user.setId(UUID.randomUUID().toString().replace("-", ""));
+		user.setLoginName(vo.getLoginName());
+		user.setSalt(RandomStringUtils.randomNumeric(8));
+		user.encrypt(vo.getPassword());
+		user.setEmail(vo.getEmail());
+		user.setMobile(vo.getMobile());
+		user.setPhone(vo.getPhone());
+		user.setCompany(new Office(vo.getCompanyId()));
+		user.setOffice(new Office(vo.getOfficeId()));
+		user.setName(vo.getName());
+		user.setUserNo(vo.getUserNo());
+		user.setDelFlag(SwitchEnum.NO.getId());
+		user.setCreateDate(new Date());
+		user.setState(vo.getState());
+		return user;
+	}
+
+	public static User getInstance(UserUpdateVO vo) {
+
+		User user = new User();
+		user.setId(vo.getId());
+		user.setEmail(vo.getEmail());
+		user.setMobile(vo.getMobile());
+		user.setPhone(vo.getPhone());
+		user.setCompany(new Office(vo.getCompanyId()));
+		user.setOffice(new Office(vo.getOfficeId()));
+		user.setName(vo.getName());
+		user.setUserNo(vo.getUserNo());
+		user.setState(vo.getState());
+		user.setUpdateDate(new Date());
+		return user;
+	}
+
+	/**
+	 * 将用户对象转换为可对外展示的Map集合
+	 * 
+	 * @return
+	 * @author Jensen
+	 * @date 2018年2月16日
+	 * @since 1.0
+	 */
+	public Map<String, Object> toMap() {
+
+		Map<String, Object> map = Maps.newHashMap();
+		map.put("id", id);
+		map.put("loginName", loginName);
+		map.put("userNo", userNo);
+		if (null != company) {
+			map.put("companyId", company.getId());
+			map.put("companyName", company.getName());
+		}
+		if (null != office) {
+			map.put("officeId", office.getId());
+			map.put("officeName", office.getName());
+		}
+		map.put("email", email);
+		map.put("mobile", mobile);
+		map.put("phone", phone);
+		map.put("loginIp", loginIp);
+		map.put("oldLoginIp", oldLoginIp);
+		map.put("loginDate", loginDate);
+		map.put("oldLoginDate", oldLoginDate);
+		map.put("photo", photo);
+		map.put("state", state);
+		return map;
+	}
+
+	public void encrypt(String password){
+		
+		int hashIterations = 10;// 加密的次数
+		this.password = new SimpleHash("MD5", password, this.salt, hashIterations).toString();
+	}
+	
 }

@@ -6,7 +6,7 @@ package com.jensen.jeeproject.common.enumeration;
  * @author Jensen
  *
  */
-public enum IsEnum {
+public enum SwitchEnum {
 	/**
 	 * 是
 	 */
@@ -14,11 +14,11 @@ public enum IsEnum {
 	/**
 	 * 否
 	 */
-	No(0);
+	NO(0);
 
 	private Integer id;
 
-	IsEnum(Integer id) {
+	SwitchEnum(Integer id) {
 		this.id = id;
 	}
 

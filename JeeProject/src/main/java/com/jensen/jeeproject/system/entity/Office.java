@@ -26,4 +26,132 @@ public class Office extends BaseEntity implements Serializable {
 	private Integer sort; // 排序
 	private List<String> childDeptList;// 快速添加子部门
 
+	public Office() {
+
+	}
+
+	public Office(String id) {
+		this.id = id;
+	}
+
+	public Office getParent() {
+		return parent;
+	}
+
+	public void setParent(Office parent) {
+		this.parent = parent;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getGrade() {
+		return grade;
+	}
+
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPostCode() {
+		return postCode;
+	}
+
+	public void setPostCode(String postCode) {
+		this.postCode = postCode;
+	}
+
+	public String getMaster() {
+		return master;
+	}
+
+	public void setMaster(String master) {
+		this.master = master;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getFax() {
+		return fax;
+	}
+
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getUseable() {
+		return useable;
+	}
+
+	public void setUseable(String useable) {
+		this.useable = useable;
+	}
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
+
+	public List<String> getChildDeptList() {
+		return childDeptList;
+	}
+
+	public void setChildDeptList(List<String> childDeptList) {
+		this.childDeptList = childDeptList;
+	}
+
 }

@@ -6,10 +6,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-	<!--配置扫描包 -->
-	<context:component-scan base-package="com.jensen.jeeproject.**.controller" />
+
 	<!--配置注解驱动 -->
-	<mvc:annotation-driven>
+	<mvc:annotation-driven validator="validator">
 		<mvc:message-converters register-defaults="true">
 			<!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
 			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
@@ -20,6 +19,9 @@
 						<value>text/html;charset=UTF-8</value>
 					</list>
 				</property>
+				<!-- 这是因为默认情况下StringHttpMessageConverter.writeInternal()会将所有可用字符集回写到响应头中。 
+					这个时候的响应头，你会发现体积非常大（Accept-Charset会达到4K+）,此处设置一下，防止响应头过大 -->
+				<property name="writeAcceptCharset" value="false"></property>
 			</bean>
 			<bean
 				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -41,6 +43,10 @@
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
+
+	<!--配置扫描包 -->
+	<context:component-scan base-package="com.jensen.jeeproject.**.controller" />
+
 	<!--配置视图解析器 -->
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -73,8 +79,6 @@
 		<property name="useCodeAsDefaultMessage" value="true" />
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
-	<!-- 注册验证器 -->
-	<mvc:annotation-driven validator="validator" />
 
 	<bean id="validator"
 		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
@@ -82,4 +86,5 @@
 		<!-- 这里配置将使用上面国际化配置的messageSource -->
 		<property name="validationMessageSource" ref="messageSource" />
 	</bean>
+
 </beans>

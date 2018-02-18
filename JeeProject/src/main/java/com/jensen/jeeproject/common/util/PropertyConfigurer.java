@@ -15,7 +15,6 @@ import org.springframework.util.PropertiesPersister;
 public class PropertyConfigurer extends PropertyPlaceholderConfigurer {
 
 	private Resource[] resources;
-
 	private PropertiesPersister propertiesPersister;
 	private Map<String, Properties> propMap;
 

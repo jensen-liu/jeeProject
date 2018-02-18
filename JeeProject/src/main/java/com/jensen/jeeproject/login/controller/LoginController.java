@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
+import static com.jensen.jeeproject.common.util.PropUtil.*;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
@@ -73,7 +73,7 @@ public class LoginController extends BaseController {
 				return "redirect:/index";
 			}
 			if (rs.hasErrors()) {
-				model.addAttribute("message", rs.getFieldErrors().get(0).getDefaultMessage());
+				model.addAttribute("message", rs.getAllErrors().get(0).getDefaultMessage());
 				return "login";
 			} else {
 				String verifyCode = (String) request.getSession().getAttribute("verifyCode");

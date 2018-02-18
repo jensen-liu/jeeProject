@@ -45,7 +45,7 @@ public abstract class DataEntity extends BaseEntity {
 	/**
 	 * 删除标记（0：正常；1：删除；2：审核）
 	 */
-	protected String delFlag;
+	protected Integer delFlag;
 
 	public User getCreateBy() {
 		return createBy;
@@ -95,11 +95,11 @@ public abstract class DataEntity extends BaseEntity {
 		this.deleteDate = deleteDate;
 	}
 
-	public String getDelFlag() {
+	public Integer getDelFlag() {
 		return delFlag;
 	}
 
-	public void setDelFlag(String delFlag) {
+	public void setDelFlag(Integer delFlag) {
 		this.delFlag = delFlag;
 	}
 

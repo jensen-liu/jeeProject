@@ -1,24 +1,21 @@
 package com.jensen.jeeproject.system.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.google.common.collect.Lists;
-import com.jensen.jeeproject.common.entity.BaseEntity;
-import com.jensen.jeeproject.common.enumeration.IsEnum;
-import com.jensen.jeeproject.common.enumeration.RoleDataScopeEnum;
+import com.jensen.jeeproject.common.entity.DataEntity;
 
-/**
- * 角色类
- * 
- * @author Jensen
- *
- */
-@TableName(value = "t_role")
-public class Role extends BaseEntity implements Serializable {
-
+@TableName("t_role")
+public class Role extends DataEntity implements Serializable {
+	@TableField(exist = false)
 	private static final long serialVersionUID = 1L;
+	/**
+	 * 归属机构
+	 */
+	private Office office;
 	/**
 	 * 角色名称
 	 */
@@ -28,35 +25,32 @@ public class Role extends BaseEntity implements Serializable {
 	 */
 	private String enName;
 	/**
-	 * 所属机构
-	 */
-	private Office office;
-	/**
-	 * 角色类型
+	 * 权限类型
 	 */
 	private String roleType;
 	/**
-	 * 是否系统数据
-	 */
-	private IsEnum isSys;
-	/**
-	 * 是否启用
-	 */
-	private IsEnum useAble;
-	/**
 	 * 数据范围
 	 */
-	private RoleDataScopeEnum dataScope;
+	private Integer dataScope;
 	/**
-	 * 按明细设置数据范围
+	 * 是否可用 1=是，0=否
 	 */
-	private List<Menu> menuList;
-
-	private List<Office> officeList = Lists.newArrayList();
+	private Integer useable;
+	/**
+	 * 分配资源
+	 */
+	private List<Permission> PermissionList;
 
 	public Role() {
-		menuList = Lists.newArrayList();
-		officeList = Lists.newArrayList();
+		PermissionList = new ArrayList<Permission>();
+	}
+
+	public Office getOffice() {
+		return office;
+	}
+
+	public void setOffice(Office office) {
+		this.office = office;
 	}
 
 	public String getName() {
@@ -75,14 +69,6 @@ public class Role extends BaseEntity implements Serializable {
 		this.enName = enName;
 	}
 
-	public Office getOffice() {
-		return office;
-	}
-
-	public void setOffice(Office office) {
-		this.office = office;
-	}
-
 	public String getRoleType() {
 		return roleType;
 	}
@@ -91,44 +77,28 @@ public class Role extends BaseEntity implements Serializable {
 		this.roleType = roleType;
 	}
 
-	public IsEnum getIsSys() {
-		return isSys;
-	}
-
-	public void setIsSys(IsEnum isSys) {
-		this.isSys = isSys;
-	}
-
-	public IsEnum getUseAble() {
-		return useAble;
-	}
-
-	public void setUseAble(IsEnum useAble) {
-		this.useAble = useAble;
-	}
-
-	public RoleDataScopeEnum getDataScope() {
+	public Integer getDataScope() {
 		return dataScope;
 	}
 
-	public void setDataScope(RoleDataScopeEnum dataScope) {
+	public void setDataScope(Integer dataScope) {
 		this.dataScope = dataScope;
 	}
 
-	public List<Menu> getMenuList() {
-		return menuList;
+	public Integer getUseable() {
+		return useable;
 	}
 
-	public void setMenuList(List<Menu> menuList) {
-		this.menuList = menuList;
+	public void setUseable(Integer useable) {
+		this.useable = useable;
 	}
 
-	public List<Office> getOfficeList() {
-		return officeList;
+	public List<Permission> getPermissionList() {
+		return PermissionList;
 	}
 
-	public void setOfficeList(List<Office> officeList) {
-		this.officeList = officeList;
+	public void setPermissionList(List<Permission> permissionList) {
+		PermissionList = permissionList;
 	}
 
 }

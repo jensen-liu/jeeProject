@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yltech.ahic.system.dao.UserDao">
+<mapper namespace="com.jensen.jeeproject.system.dao.UserDao">
 
 	<sql id="userColumns">
 		u.id AS "id",
 		u.login_name AS "loginName",
-		u.password AS "password",
+		u.password AS
+		"password",
 		u.salt AS "salt",
-		u.employee_no AS "employeeNo",
+		u.user_no AS "userNo",
 		u.name AS "name",
 		u.company_id AS "company.id",
 		u.office_id AS "office.id",
-		u.create_date AS "createDate",
+		u.create_date
+		AS "createDate",
 		u.update_date AS "updateDate",
-		u.delete_date AS "deleteDate",
-		u.state AS "state.id",
+		u.delete_date AS
+		"deleteDate",
+		u.state AS "state",
 		u.phone AS "phone",
-		u.mobile AS "mobile",
+		u.mobile AS
+		"mobile",
 		u.email AS "email",
 		u.login_ip AS "loginIp",
-		u.login_date AS "loginDate",
-		u.login_flag AS "loginFlag",
+		u.login_date AS
+		"loginDate",
 		u.photo AS "photo",
 		u.old_login_ip AS "oldLoginIp"
 	</sql>
 
 	<sql id="userJoins">
 		LEFT JOIN t_office c on u.company_id = c.id
-		LEFT JOIN t_office d on u.office_id = d.id
+		LEFT JOIN
+		t_office d on u.office_id = d.id
 	</sql>
 
 	<select id="getUserById" resultType="User" parameterType="String">
@@ -35,7 +40,7 @@
 
 		<include refid="userColumns"></include>
 
-		from user u
+		from t_user u
 
 		<include refid="userJoins"></include>
 
@@ -61,22 +66,22 @@
 
 	<select id="getUsers" resultType="User">
 		<![CDATA[
-			select * from user where delFlag=0 limit 1
+			select * from user where delFlag=0 
 		]]>
 	</select>
 
-	<select id="getUsersByCondition" resultType="User"
+	<select id="getUserListByCondition" resultType="User"
 		parameterType="Map">
 		select
 
 		<include refid="userColumns"></include>
 
-		from user u
+		from t_user u
 
 		<include refid="userJoins"></include>
 
 		<where>
-			u.delFlag=0
+			u.del_flag=0
 		</where>
 	</select>
 	<select id="getUsersCount" resultType="java.lang.Integer"
@@ -86,36 +91,35 @@
 		]]>
 	</select>
 
-	<insert id="insertUser" parameterType="User">
+	<insert id="insert" parameterType="User">
 		<![CDATA[
-			insert into user 
-				(id,login_name,password,salt,employee_no,name,delFlag,state,company_id,office_id,create_time,email,phone,mobile,login_ip,old_login_ip,login_flag,photo)
+			insert into t_user 
+				(id,login_name,password,salt,user_no,name,del_flag,state,company_id,office_id,create_date,email,phone,mobile,login_ip,old_login_ip,photo)
 			values 
-				(#{id},#{loginName},#{password},#{salt},#{employeeNo},#{name},#{delFlag},${state.id},${company.id},${office.id},#{createTime},
-				#{email},#{phone},#{mobile},#{loginIp},${oldLoginIp},${loginFlag},${photo})
+				(#{id},#{loginName},#{password},#{salt},#{userNo},#{name},#{delFlag},#{state},#{company.id},#{office.id},#{createDate},
+				#{email},#{phone},#{mobile},#{loginIp},#{oldLoginIp},#{photo})
 		]]>
 	</insert>
 
 	<update id="updateUser" parameterType="User">
 		<![CDATA[
-			update user set name=#{name},updateTime=#{updateTime},orgId=#{org.id},isEnable=#{isEnable} where id=#{id}
+			update t_user set name=#{name},update_date=#{updateDate},company_id=#{company.id},office_id=#{office.id},state=#{state} where id=#{id}
 		]]>
 	</update>
 
-	<delete id="deleteUser" parameterType="String">
+	<update id="deleteUser" parameterType="String">
 		<![CDATA[
-			delete from user where id=#{id}
+			update t_user set del_flag = 1 where id=#{id}
 		]]>
-	</delete>
+	</update>
 
 	<update id="invalidUser" parameterType="String">
 		<![CDATA[
-			update user set delFlag = 1 where id=#{id}
+			update t_user set delFlag = 1, delete_date = #{deleteDate} where id=#{id}
 		]]>
 	</update>
 
-	<select id="getRoles" resultType="com.yltech.ahic.system.entity.Role"
-		parameterType="String">
+	<select id="getRoles" resultType="Role" parameterType="String">
 		<![CDATA[
 			select t1.* from picc_role t1 left join user_role t2 on t1.id=t2.roleId where t2.userId=#{id}
 		]]>
@@ -123,12 +127,12 @@
 
 	<update id="changeValid" parameterType="User">
 		<![CDATA[
-			update user set isEnable=#{isEnable} where id=#{id}
+			update t_user set isEnable=#{isEnable} where id=#{id}
 		]]>
 	</update>
-	<update id="updateUserPwd" parameterType="User">
-		update user set
-		passWord=#{passWord} where id=#{id}
+	<update id="resetPassword" parameterType="User">
+		update t_user set
+		password=#{password} where id=#{id}
 	</update>
 
 </mapper>

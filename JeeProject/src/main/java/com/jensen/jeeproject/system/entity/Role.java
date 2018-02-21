@@ -3,9 +3,11 @@ package com.jensen.jeeproject.system.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.google.common.collect.Maps;
 import com.jensen.jeeproject.common.entity.DataEntity;
 
 @TableName("t_role")
@@ -43,6 +45,20 @@ public class Role extends DataEntity implements Serializable {
 
 	public Role() {
 		PermissionList = new ArrayList<Permission>();
+	}
+
+	public Map<String, Object> toMap() {
+
+		Map<String, Object> map = Maps.newHashMap();
+		map.put("id", id);
+		map.put("name", name);
+		map.put("officeId", office.getId());
+		map.put("enName", enName);
+		map.put("roleType", roleType);
+		map.put("dataScope", dataScope);
+		map.put("useable", useable);
+
+		return map;
 	}
 
 	public Office getOffice() {

@@ -6,26 +6,61 @@ import java.util.Map;
 
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.google.common.collect.Maps;
-import com.jensen.jeeproject.common.entity.BaseEntity;
+import com.jensen.jeeproject.common.entity.DataEntity;
 import com.jensen.jeeproject.common.enumeration.OfficeTypeEnum;
 
 @TableName(value = "t_office")
-public class Office extends BaseEntity implements Serializable {
+public class Office extends DataEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private Office parent; // 父级编号
-	private String path; // 路径
-	private String code; // 机构编码
-	private String name; // 机构名称
-	private Integer type; // 机构类型（1：公司；2：部门；3：小组）
-	private Integer grade; // 机构等级
-	private String address; // 联系地址
-	private String master; // 负责人
-	private String phone; // 电话
-	private String fax; // 传真
-	private String email; // 邮箱
-	private Integer sort; // 排序
-	private List<String> childDeptList;// 快速添加子部门
+	/**
+	 * 父级编号
+	 */
+	private Office parent;
+	/**
+	 * 路径
+	 */
+	private String path;
+	/**
+	 * 机构编码
+	 */
+	private String code;
+	/**
+	 * 机构名称
+	 */
+	private String name;
+	/**
+	 * 机构类型（1：公司；2：部门；3：小组）
+	 */
+	private Integer type;
+	/**
+	 * 联系地址
+	 */
+	private String address;
+	/**
+	 * 联系人
+	 */
+	private String contact;
+	/**
+	 * 电话
+	 */
+	private String phone;
+	/**
+	 * 传真
+	 */
+	private String fax;
+	/**
+	 * 邮箱
+	 */
+	private String email;
+	/**
+	 * 排序
+	 */
+	private Integer sort;
+	/**
+	 * 快速添加子部门
+	 */
+	private List<String> childDeptList;
 
 	public Office() {
 
@@ -47,9 +82,8 @@ public class Office extends BaseEntity implements Serializable {
 		map.put("code", code);
 		map.put("type", type);
 		map.put("typeName", OfficeTypeEnum.getEnumName(type));
-		map.put("grade", grade);
 		map.put("address", address);
-		map.put("master", master);
+		map.put("contact", contact);
 		map.put("phone", phone);
 		map.put("fax", fax);
 		map.put("email", email);
@@ -97,14 +131,6 @@ public class Office extends BaseEntity implements Serializable {
 		this.type = type;
 	}
 
-	public Integer getGrade() {
-		return grade;
-	}
-
-	public void setGrade(Integer grade) {
-		this.grade = grade;
-	}
-
 	public String getAddress() {
 		return address;
 	}
@@ -113,12 +139,12 @@ public class Office extends BaseEntity implements Serializable {
 		this.address = address;
 	}
 
-	public String getMaster() {
-		return master;
+	public String getContact() {
+		return contact;
 	}
 
-	public void setMaster(String master) {
-		this.master = master;
+	public void setContact(String contact) {
+		this.contact = contact;
 	}
 
 	public String getPhone() {

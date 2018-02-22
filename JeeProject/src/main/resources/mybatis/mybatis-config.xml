@@ -12,11 +12,7 @@
 	<typeAliases>
 		<typeAlias type="com.jensen.jeeproject.system.entity.User" alias="User"/>
 		<typeAlias type="com.jensen.jeeproject.system.entity.Role" alias="Role"/>
-		<!-- 
-		
-		<typeAlias type="com.yl.picc.authority.entity.Menu" alias="Menu"/>
-		<typeAlias type="com.yl.picc.authority.entity.Organization" alias="Org"/>
-		<typeAlias type="com.yl.picc.common.dict.IntEnumTypeHandler" alias="IntEnumTypeHandler"/>
-		 -->
+		<typeAlias type="com.jensen.jeeproject.system.entity.Office" alias="Office"/>
+		<typeAlias type="com.jensen.jeeproject.system.entity.Permission" alias="Permission"/>
 	</typeAliases>
 </configuration>

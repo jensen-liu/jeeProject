@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jensen.jeeproject.system.dao.RoleDao">
+
+	<sql id="roleColumns">
+		r.id AS "id",
+		r.name AS "name",
+		r.en_name AS "enName",
+		r.office_id AS "office.id",
+		o.name AS "office.name",
+		r.role_type AS
+		"roleType",
+		r.data_scope AS "dataScope",
+		r.create_date AS "createDate",
+		r.create_by AS "createBy.id",
+		r.update_date AS "updateDate",
+		r.update_by AS "updateBy.id"
+	</sql>
+
+	<sql id="roleJoins">
+		LEFT JOIN t_office o on o.parent_id = o.id
+	</sql>
+
+	<select id="getRoleById" resultType="Role" parameterType="String">
+		select
+
+		<include refid="roleColumns"></include>
+
+		from t_role r
+
+		<include refid="roleJoins"></include>
+
+		<where>
+			r.id=#{id}
+		</where>
+	</select>
+
+	<select id="getRoleByName" resultType="Role">
+		select
+
+		<include refid="roleColumns"></include>
+
+		from t_role r
+
+		<include refid="roleJoins"></include>
+
+		<where>
+			r.name=#{name}
+		</where>
+		limit 1
+	</select>
+
+	<select id="getList" resultType="Role">
+		<![CDATA[
+			select * from t_role 
+		]]>
+	</select>
+
+	<select id="getListByCondition" resultType="Role" parameterType="Map">
+		select
+
+		<include refid="roleColumns"></include>
+
+		from t_role r
+
+		<include refid="roleJoins"></include>
+
+	</select>
+
+	<insert id="insert" parameterType="Role">
+		<![CDATA[
+			insert into t_role 
+				(id,name,en_name,office_id,type,address,contact,phone,fax,email,sort,create_date,create_by,del_flag)
+			values 
+				(#{id},#{name},#{enName},#{office.id},#{type},#{address},#{contact},#{phone},#{fax},#{email},#{sort},
+				#{create_date},#{create_by},#{del_flag})
+		]]>
+	</insert>
+
+	<update id="update" parameterType="Role">
+		<![CDATA[
+			update t_role set 
+			name=#{enName},
+			en_name=#{code},
+			parent_id=#{parent.id},
+			type=#{type},
+			address=#{address},
+			contact=#{contact},
+			phone=#{phone},
+			fax=#{fax},
+			email=#{email},
+			sort=#{sort},
+			create_date=#{create_date},
+			create_by=#{create_by}
+		]]>
+		<where>
+			where id=#{id}
+		</where>
+	</update>
+
+	<update id="delete" parameterType="String">
+		<![CDATA[
+			delete from t_role 
+		]]>
+		<where>
+			where id=#{id}
+		</where>
+	</update>
+
+
+</mapper>

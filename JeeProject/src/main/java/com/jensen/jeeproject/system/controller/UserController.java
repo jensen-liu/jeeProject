@@ -31,6 +31,13 @@ import com.jensen.jeeproject.system.vo.UserInsertVO;
 import com.jensen.jeeproject.system.vo.UserResetPasswordVO;
 import com.jensen.jeeproject.system.vo.UserUpdateVO;
 
+/**
+ * 用户Controller类
+ * 
+ * @author Jensen
+ * @date 下午7:46:13
+ * @version V1.0
+ */
 @Controller
 @RequestMapping("/user")
 public class UserController extends BaseController {
@@ -189,7 +196,7 @@ public class UserController extends BaseController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value="resetPassword")
+	@RequestMapping(value = "resetPassword")
 	public String resetPassword(@Valid UserResetPasswordVO vo, BindingResult rs) {
 
 		ResponseResult result = new ResponseResult();
@@ -206,6 +213,4 @@ public class UserController extends BaseController {
 		}
 	}
 
-	
-	
 }

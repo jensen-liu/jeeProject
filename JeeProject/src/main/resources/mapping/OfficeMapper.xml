@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jensen.jeeproject.system.dao.OfficeDao">
+
+	<sql id="officeColumns">
+		o.id AS "id",
+		o.name AS "name",
+		o.code AS "code",
+		o.parent_id
+		AS "parent.id",
+		o2.name AS "parent.name",
+		o2.code AS "parent.code",
+		o.path AS "path",
+		o.type AS "type",
+		o.address AS "address",
+		o.phone AS
+		"phone",
+		o.fax AS "fax",
+		o.email AS "email",
+		o.sort AS "sort",
+		o.contact
+		AS "contact"
+	</sql>
+
+	<sql id="officeJoins">
+		LEFT JOIN t_office o2 on o.parent_id = o2.id
+	</sql>
+
+	<select id="getOfficeById" resultType="Office" parameterType="String">
+		select
+
+		<include refid="officeColumns"></include>
+
+		from t_office o
+
+		<include refid="officeJoins"></include>
+
+		<where>
+			o.id=#{id} AND o.del_flag = 0
+		</where>
+	</select>
+
+	<select id="getOfficeByName" resultType="Office">
+		select
+
+		<include refid="officeColumns"></include>
+
+		from t_office o
+
+		<include refid="officeJoins"></include>
+
+		<where>
+			o.del_flag=0 and o.name=#{name}
+		</where>
+		limit 1
+	</select>
+
+	<select id="getOfficeByCode" resultType="Office">
+		select
+
+		<include refid="officeColumns"></include>
+
+		from t_office o
+
+		<include refid="officeJoins"></include>
+
+		<where>
+			o.del_flag=0 and o.code=#{code}
+		</where>
+		limit 1
+	</select>
+
+	<select id="getList" resultType="Office">
+		<![CDATA[
+			select * from t_office where del_flag=0 
+		]]>
+	</select>
+
+	<select id="getListByCondition" resultType="Office"
+		parameterType="Map">
+		select
+
+		<include refid="officeColumns"></include>
+
+		from t_office o
+
+		<include refid="officeJoins"></include>
+
+		<where>
+			o.del_flag=0
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="User">
+		<![CDATA[
+			insert into t_office 
+				(id,name,code,parent_id,type,address,contact,phone,fax,email,sort,create_date,create_by,del_flag)
+			values 
+				(#{id},#{name},#{code},#{parent.id},#{type},#{address},#{contact},#{phone},#{fax},#{email},#{sort},
+				#{create_date},#{create_by},#{del_flag})
+		]]>
+	</insert>
+
+	<update id="update" parameterType="User">
+		<![CDATA[
+			update t_office set 
+			name=#{name},
+			code=#{code},
+			parent_id=#{parent.id},
+			type=#{type},
+			address=#{address},
+			contact=#{contact},
+			phone=#{phone},
+			fax=#{fax},
+			email=#{email},
+			sort=#{sort},
+			create_date=#{create_date},
+			create_by=#{create_by}
+		]]>
+		<where>
+			where id=#{id}
+		</where>
+	</update>
+
+	<update id="delete" parameterType="String">
+		<![CDATA[
+			update t_office set del_flag = #{delFlag}, delete_date = #{deleteDate}
+		]]>
+		<where>
+			where id=#{id}
+		</where>
+	</update>
+
+
+</mapper>

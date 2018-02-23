@@ -2,50 +2,53 @@ package com.jensen.jeeproject.system.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jensen.jeeproject.system.dao.PermissionDao;
 import com.jensen.jeeproject.system.entity.Permission;
 import com.jensen.jeeproject.system.service.PermissionService;
 
 @Service
 public class PermissionServiceImpl implements PermissionService {
 
-	
-	
+	@Autowired
+	private PermissionDao permDao;
+
 	@Override
 	public Permission getPermById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+
+		return permDao.getPermById(id);
 	}
 
 	@Override
 	public List<Permission> getList() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return permDao.getList();
 	}
 
 	@Override
 	public List<Permission> getListByRole() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return permDao.getListByRole();
 	}
 
 	@Override
 	public int insert(Permission perm) {
-		// TODO Auto-generated method stub
-		return 0;
+
+		return permDao.insert(perm);
 	}
 
 	@Override
 	public int update(Permission perm) {
-		// TODO Auto-generated method stub
-		return 0;
+
+		return permDao.update(perm);
 	}
 
 	@Override
-	public int delete(Permission perm) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int delete(String id) {
+
+		return permDao.delete(id);
 	}
 
 }

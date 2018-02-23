@@ -22,8 +22,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jensen.jeeproject.common.controller.BaseController;
+import com.jensen.jeeproject.common.util.ResponseResult;
 import com.jensen.jeeproject.common.util.VerifyCodeUtils;
 import com.jensen.jeeproject.login.vo.LoginVO;
 
@@ -56,7 +58,7 @@ public class LoginController extends BaseController {
 	}
 
 	/**
-	 * 登录验证码
+	 * 登录验证
 	 * 
 	 * @param vo
 	 * @param rs
@@ -64,47 +66,94 @@ public class LoginController extends BaseController {
 	 * @param errorInfo
 	 * @return
 	 */
+	// @RequestMapping(value = "login", method = RequestMethod.POST)
+	// public String login(@Valid LoginVO vo, BindingResult rs, Model model,
+	// HttpServletRequest request) {
+	//
+	// try {
+	// Subject subject = SecurityUtils.getSubject();
+	// if (subject.isAuthenticated()) {
+	// return "redirect:/index";
+	// }
+	// if (rs.hasErrors()) {
+	// model.addAttribute("message",
+	// rs.getAllErrors().get(0).getDefaultMessage());
+	// return "login";
+	// } else {
+	// String verifyCode = (String)
+	// request.getSession().getAttribute("verifyCode");
+	// if (null == verifyCode) {
+	// return "login";
+	// }
+	// if (!vo.getVerifyCode().equalsIgnoreCase(verifyCode)) {
+	// model.addAttribute("message", "验证码不正确");
+	// return "login";
+	// } else {
+	// UsernamePasswordToken token = new
+	// UsernamePasswordToken(vo.getLoginName(), vo.getPassword());
+	// token.setRememberMe(Boolean.valueOf(vo.getRememberMe()));
+	// subject.login(token);
+	// return "redirect:/index";
+	// }
+	// }
+	// } catch (UnknownAccountException e) {
+	// model.addAttribute("message", getPropMessage("login.UnknownAccount"));
+	// } catch (ExcessiveAttemptsException e) {
+	// model.addAttribute("message", e.getMessage());
+	// } catch (IncorrectCredentialsException e) {
+	// model.addAttribute("message",
+	// getPropMessage("login.IncorrectCredentials"));
+	// } catch (LockedAccountException e) {
+	// model.addAttribute("message", e.getMessage());
+	// } catch (DisabledAccountException e) {
+	// model.addAttribute("message", getPropMessage("login.DisabledAccount"));
+	// } catch (Exception e) {
+	// model.addAttribute("message", getPropMessage("exception"));
+	// LOGGER.error("系统登录异常", e);
+	// }
+	// return "login";
+	// }
+
+	@ResponseBody
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public String login(@Valid LoginVO vo, BindingResult rs, Model model, HttpServletRequest request) {
 
+		ResponseResult result = new ResponseResult();
 		try {
 			Subject subject = SecurityUtils.getSubject();
 			if (subject.isAuthenticated()) {
-				return "redirect:/index";
+				return result.toSuccessString();
 			}
 			if (rs.hasErrors()) {
-				model.addAttribute("message", rs.getAllErrors().get(0).getDefaultMessage());
-				return "login";
+				return result.toFailString(rs.getAllErrors().get(0).getDefaultMessage());
 			} else {
 				String verifyCode = (String) request.getSession().getAttribute("verifyCode");
 				if (null == verifyCode) {
-					return "login";
+					return result.toFailString(getPropMessage("login.verifyCode.NotBlank"));
 				}
 				if (!vo.getVerifyCode().equalsIgnoreCase(verifyCode)) {
-					model.addAttribute("message", "验证码不正确");
-					return "login";
+					return result.toFailString(getPropMessage("login.verifyCode.Wrong"));
 				} else {
 					UsernamePasswordToken token = new UsernamePasswordToken(vo.getLoginName(), vo.getPassword());
 					token.setRememberMe(Boolean.valueOf(vo.getRememberMe()));
 					subject.login(token);
-					return "redirect:/index";
+					return result.toSuccessString();
 				}
 			}
 		} catch (UnknownAccountException e) {
-			model.addAttribute("message", getPropMessage("login.UnknownAccount"));
+			return result.toFailString(getPropMessage("login.UnknownAccount"));
 		} catch (ExcessiveAttemptsException e) {
-			model.addAttribute("message", e.getMessage());
+			return result.toFailString(e.getMessage());
 		} catch (IncorrectCredentialsException e) {
-			model.addAttribute("message", getPropMessage("login.IncorrectCredentials"));
+			return result.toFailString(getPropMessage("login.IncorrectCredentials"));
 		} catch (LockedAccountException e) {
-			model.addAttribute("message", e.getMessage());
+			return result.toFailString(e.getMessage());
 		} catch (DisabledAccountException e) {
-			model.addAttribute("message", getPropMessage("login.DisabledAccount"));
+			return result.toFailString(getPropMessage("login.DisabledAccount"));
 		} catch (Exception e) {
-			model.addAttribute("message", getPropMessage("exception"));
 			LOGGER.error("系统登录异常", e);
+			return result.toFailString(getPropMessage("exception"));
 		}
-		return "login";
 	}
 
 	/**

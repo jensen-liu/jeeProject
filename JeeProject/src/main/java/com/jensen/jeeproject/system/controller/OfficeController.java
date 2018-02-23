@@ -18,6 +18,7 @@ import com.jensen.jeeproject.system.entity.Office;
 import com.jensen.jeeproject.system.service.OfficeService;
 import com.jensen.jeeproject.system.vo.OfficeInsertVO;
 import com.jensen.jeeproject.system.vo.OfficeUpdateVO;
+
 /**
  * 组织机构Controller类
  * 
@@ -32,6 +33,12 @@ public class OfficeController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OfficeController.class);
 	@Autowired
 	private OfficeService officeService;
+
+	@RequestMapping("toHome")
+	public String toHome() {
+
+		return "office/home";
+	}
 
 	@ResponseBody
 	@RequestMapping("select")

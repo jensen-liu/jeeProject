@@ -91,6 +91,18 @@ public class Office extends DataEntity implements Serializable {
 		return map;
 	}
 
+	public static Office getInstance() {
+
+		return new Office();
+	}
+
+	public static Office getInstance(String id) {
+
+		Office office = getInstance();
+		office.setId(id);
+		return office;
+	}
+
 	public Office getParent() {
 		return parent;
 	}

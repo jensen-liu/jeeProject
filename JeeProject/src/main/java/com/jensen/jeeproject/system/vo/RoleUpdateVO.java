@@ -29,6 +29,10 @@ public class RoleUpdateVO implements Serializable {
 	 * 数据范围
 	 */
 	private Integer dataScope;
+	/**
+	 * 分配权限
+	 */
+	private String permissions;
 
 	public String getId() {
 		return id;
@@ -78,10 +82,18 @@ public class RoleUpdateVO implements Serializable {
 		this.dataScope = dataScope;
 	}
 
+	public String getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(String permissions) {
+		this.permissions = permissions;
+	}
+
 	@Override
 	public String toString() {
 		return "RoleUpdateVO [id=" + id + ", officeId=" + officeId + ", name=" + name + ", enName=" + enName
-				+ ", roleType=" + roleType + ", dataScope=" + dataScope + "]";
+				+ ", roleType=" + roleType + ", dataScope=" + dataScope + ", permissions=" + permissions + "]";
 	}
 
 }

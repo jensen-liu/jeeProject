@@ -6,16 +6,31 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="${ctx}/assets/css/bootstrap.min.css" rel="stylesheet" />
-<link href="${ctx}/assets/css/font-awesome.min.css" rel="stylesheet"/>
-<link href="${ctx}/assets/css/ace.min.css" rel="stylesheet"/>
-<link href="${ctx}/assets/css/ace-rtl.min.css" rel="stylesheet"/>
-<link href="${ctx}/assets/css/ace-skins.min.css" rel="stylesheet"/>
+<link href="${ctx}/assets/css/font-awesome.min.css" rel="stylesheet" />
+<link href="${ctx}/assets/css/ace.min.css" rel="stylesheet" />
+<link href="${ctx}/assets/css/ace-rtl.min.css" rel="stylesheet" />
+<link href="${ctx}/assets/css/ace-skins.min.css" rel="stylesheet" />
 <link href="${ctx}/assets/css/style.css" />
+<link href="${ctx}/assets/css/login.css" />
+<link href="${ctx}/assets/plugins/jquery-easyui-1.5.3/themes/icon.css"
+	rel="stylesheet" type="text/css">
+<link href="${ctx}/assets/plugins/insdep/reset.min.css" rel="stylesheet"
+	type="text/css">
+<link href="${ctx}/assets/plugins/insdep/easyui_full.css"
+	rel="stylesheet" type="text/css">
+<link href="${ctx}/assets/plugins/insdep/iconfont/iconfont.css"
+	rel="stylesheet" type="text/css">
 <link rel="shortcut icon" href="${ctx}/favicon.ico" />
 
 <script src="${ctx}/assets/js/ace-extra.min.js"></script>
 <script src="${ctx}/assets/js/jquery-1.10.2.min.js"></script>
-<script src="${ctx}/assets/plugins/layer/layer.js" type="text/javascript"></script>
+<script src="${ctx}/assets/plugins/layer/layer.js"
+	type="text/javascript"></script>
+<script type="text/javascript"
+	src="${ctx}/assets/plugins/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
+<script type="text/javascript"
+	src="${ctx}/assets/plugins/insdep/insdep-extend.min.js"></script>
+
 <title>登录</title>
 </head>
 
@@ -56,23 +71,29 @@
 								<fieldset>
 									<label class="block clearfix"> <span
 										class="block input-icon input-icon-right"> <input
-											type="text" class="form-control" placeholder="登录名" name="loginName">
-											<i class="icon-user"></i>
+											type="text" class="form-control" placeholder="登录名"
+											name="loginName"> <i class="icon-user"></i>
 									</span>
 									</label> <label class="block clearfix"> <span
 										class="block input-icon input-icon-right"> <input
 											type="password" class="form-control" placeholder="密码"
 											name="password"> <i class="icon-lock"></i>
 									</span>
+									</label> <label class="block clearfix"> <span
+										class="block input-icon input-icon-right"> <input
+											type="text" class="form-control" placeholder="验证码"
+											name="verifyCode" style="width:120px;display: inline-block;">
+											<img id="verifyCode" alt="验证码" src="${ctx}/verifyCode"
+											style="display: inline-block;cursor: pointer;">
+									</span>
 									</label>
-
 									<div class="space"></div>
 
 									<div class="clearfix">
-										<label class="inline"> <input type="checkbox" name="rememberMe"
-											class="ace"> <span class="lbl">保存密码</span>
-										</label>
-										<input type="submit" value="登录" class="width-35 pull-right btn btn-sm btn-primary"/>
+										<label class="inline"> <input type="checkbox"
+											name="rememberMe" class="ace"> <span class="lbl">保存密码</span>
+										</label> <input type="submit" value="登录"
+											class="width-35 pull-right btn btn-sm btn-primary" />
 									</div>
 
 									<div class="space-4"></div>
@@ -97,23 +118,55 @@
 		</div>
 	</div>
 	<div class="loginbm">
-		版权所有 2016 <a href="">南京思美软件系统有限公司</a>
+		版权所有 2018 <a href="">Jensen个人所有</a>
 	</div>
 	<strong></strong>
 </body>
 </html>
 <script>
-	$('#login_btn').on('click', function() {
-		var str = "";
-		$("input[type$='text']").each(function(n) {
-			if ($(this).val() == "") {
-				layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
-					title : '提示框',
-					icon : 0,
+	var ctx = "${ctx}";
+	var loginUrl = ctx + "/login";
+	var indexUrl = ctx + "/index";
+	var verifyCodeUrl = ctx + "/verifyCode";
+	$(function() {
+		initForm();
+		initVerifyCode();
+	});
+
+	function initForm() {
+		$("#loginForm").form({
+			url : loginUrl,
+			onSubmit : function() {
+				var str = "";
+				$("input[type$='text']").each(function(n) {
+					if ($(this).val() == "") {
+						layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
+							title : '提示框',
+							icon : 0,
+						});
+						return false;
+					}
 				});
-				return false;
+			},
+			success : function(data) {
+				data = jQuery.parseJSON(data);
+				if (data.result == 'ok') {
+					location.href = indexUrl;
+				} else {
+					alert(data.response.msg);
+				}
 			}
 		});
-		$("#loginFrom").submit();
-	})
+	}
+
+	function initVerifyCode() {
+		$("#verifyCode").click(function() {
+			var src = $(this).attr("src");
+			$(this).attr("src", src + "?timestamp=" + (new Date()).valueOf());
+		});
+	}
+
+	$('#login_btn').on('click', function() {
+		$("#loginForm").form("submit");
+	});
 </script>

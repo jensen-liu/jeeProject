@@ -2,6 +2,7 @@ package com.jensen.jeeproject.system.controller;
 
 import static com.jensen.jeeproject.common.util.PropUtil.getPropMessage;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import javax.validation.Valid;
 
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jensen.jeeproject.common.exception.ServiceException;
 import com.jensen.jeeproject.common.util.ResponseResult;
 import com.jensen.jeeproject.system.entity.Role;
 import com.jensen.jeeproject.system.service.RoleService;
@@ -58,17 +60,39 @@ public class RoleController {
 	public String insert(@Valid RoleInsertVO vo, BindingResult rs) {
 
 		ResponseResult result = new ResponseResult();
-
-		return result.toSuccessString();
+		if (rs.hasErrors()) {
+			return result.toFailString(rs.getAllErrors().get(0).getDefaultMessage());
+		} else {
+			try {
+				roleService.insert(Role.getInstance(vo));
+				return result.toSuccessString();
+			} catch (ServiceException e) {
+				return result.toFailString(e.getMessage());
+			} catch (Exception e) {
+				LOGGER.error("角色添加异常：{}", vo, e);
+				return result.toFailString(getPropMessage("exception"));
+			}
+		}
 	}
 
 	@ResponseBody
 	@RequestMapping("update")
-	public String insert(@Valid RoleUpdateVO vo, BindingResult rs) {
+	public String update(@Valid RoleUpdateVO vo, BindingResult rs) {
 
 		ResponseResult result = new ResponseResult();
-
-		return result.toSuccessString();
+		if (rs.hasErrors()) {
+			return result.toFailString(rs.getAllErrors().get(0).getDefaultMessage());
+		} else {
+			try {
+				roleService.update(Role.getInstance(vo));
+				return result.toSuccessString();
+			} catch (ServiceException e) {
+				return result.toFailString(e.getMessage());
+			} catch (Exception e) {
+				LOGGER.error("角色修改异常：{}", vo, e);
+				return result.toFailString(getPropMessage("exception"));
+			}
+		}
 	}
 
 	@ResponseBody
@@ -76,8 +100,16 @@ public class RoleController {
 	public String delete(String id) {
 
 		ResponseResult result = new ResponseResult();
-
-		return result.toSuccessString();
+		try {
+			if (isNotBlank(id)) {
+				roleService.delete(id);
+				return result.toSuccessString();
+			} else {
+				return result.toFailString(getPropMessage("role.id.NotBlank"));
+			}
+		} catch (Exception e) {
+			return result.toFailString(getPropMessage("exception"));
+		}
 	}
 
 }

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.jensen.jeeproject.system.dao.RoleDao;
+import com.jensen.jeeproject.system.dao.RolePermissionDao;
+import com.jensen.jeeproject.system.dao.UserRoleDao;
 import com.jensen.jeeproject.system.entity.Role;
 import com.jensen.jeeproject.system.entity.User;
 import com.jensen.jeeproject.system.service.RoleService;
@@ -17,6 +19,10 @@ public class RoleServiceImpl implements RoleService {
 
 	@Autowired
 	private RoleDao roleDao;
+	@Autowired
+	private UserRoleDao userRoleDao;
+	@Autowired
+	private RolePermissionDao rolePermDao;
 
 	@Override
 	public Role getRoleById(String id) {
@@ -54,6 +60,9 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	public int delete(String id) {
+
+		userRoleDao.deleteByRole(id);
+		rolePermDao.deleteByRole(id);
 
 		return roleDao.delete(id);
 	}

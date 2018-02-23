@@ -135,14 +135,14 @@ $(function() {
 			} ]
 		}, {
 			id : '4',
-			text : '订单管理',
+			text : '系统管理',
 			icon : 'icon-envelope',
 			url : '',
 			menus : [ {
 				id : '41',
-				text : '订单查询',
+				text : '组织机构管理',
 				icon : 'icon-glass',
-				url : '/index'
+				url : '/jeeProject/office/toHome'
 			}, {
 				id : '42',
 				text : '订单排产',

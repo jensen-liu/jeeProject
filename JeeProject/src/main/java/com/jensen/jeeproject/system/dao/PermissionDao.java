@@ -1,5 +1,7 @@
 package com.jensen.jeeproject.system.dao;
 
+import java.util.List;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.jensen.jeeproject.system.entity.Permission;
 
@@ -7,10 +9,14 @@ public interface PermissionDao extends BaseMapper<Permission, String> {
 
 	Permission getPermById(String id);
 
-	int insert();
+	List<Permission> getList();
 
-	int update();
+	List<Permission> getListByRole();
 
-	int delete();
+	int insert(Permission perm);
+
+	int update(Permission perm);
+
+	int delete(String id);
 
 }

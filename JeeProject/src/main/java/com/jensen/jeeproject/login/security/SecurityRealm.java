@@ -101,8 +101,10 @@ public class SecurityRealm extends AuthorizingRealm {
 
 			this.id = user.getId();
 			this.loginName = user.getLoginName();
-			this.officeId = user.getOffice().getId();
-			this.officePath = user.getOffice().getPath();
+			if(null != user.getOffice()){
+				this.officeId = user.getOffice().getId();
+				this.officePath = user.getOffice().getPath();
+			}
 		}
 
 		public static ShiroUser getInstance() {

@@ -46,7 +46,7 @@ public class OfficeServiceImpl implements OfficeService {
 	}
 
 	@Override
-	public Page<Office> getUserListByCondition(Page<Office> page, Map<String, Object> condition) {
+	public Page<Office> getListByCondition(Page<Office> page, Map<String, Object> condition) {
 
 		List<Office> officeList = officeDao.getListByCondition(page, condition);
 		page.setSearchCount(true);

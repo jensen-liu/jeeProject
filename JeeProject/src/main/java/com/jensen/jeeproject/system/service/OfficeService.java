@@ -18,7 +18,7 @@ public interface OfficeService {
 
 	List<Office> getList();
 
-	Page<Office> getUserListByCondition(Page<Office> page, Map<String, Object> condition);
+	Page<Office> getListByCondition(Page<Office> page, Map<String, Object> condition);
 
 	int insert(Office office) throws ServiceException;
 

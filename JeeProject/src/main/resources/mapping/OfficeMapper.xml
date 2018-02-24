@@ -6,8 +6,7 @@
 		o.id AS "id",
 		o.name AS "name",
 		o.code AS "code",
-		o.parent_id
-		AS "parent.id",
+		o.parent_id AS "parent.id",
 		o2.name AS "parent.name",
 		o2.code AS "parent.code",
 		o.path AS "path",
@@ -71,9 +70,17 @@
 	</select>
 
 	<select id="getList" resultType="Office">
-		<![CDATA[
-			select * from t_office where del_flag=0 
-		]]>
+		select
+
+		<include refid="officeColumns"></include>
+
+		from t_office o
+
+		<include refid="officeJoins"></include>
+
+		<where>
+			 o.del_flag = 0
+		</where>
 	</select>
 
 	<select id="getListByCondition" resultType="Office"
@@ -127,7 +134,7 @@
 			update t_office set del_flag = #{delFlag}, delete_date = #{deleteDate}
 		]]>
 		<where>
-			where id=#{id}
+			 id=#{id}
 		</where>
 	</update>
 

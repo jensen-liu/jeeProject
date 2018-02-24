@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.google.common.collect.Maps;
 import com.jensen.jeeproject.common.entity.DataEntity;
 import com.jensen.jeeproject.common.enumeration.OfficeTypeEnum;
+import com.jensen.jeeproject.system.vo.TreeVO;
 
 @TableName(value = "t_office")
 public class Office extends DataEntity implements Serializable {
@@ -74,11 +75,11 @@ public class Office extends DataEntity implements Serializable {
 
 		Map<String, Object> map = Maps.newHashMap();
 		map.put("id", id);
-		if (null == parent) {
+		if (null != parent) {
 			map.put("parentId", parent.getId());
 			map.put("parentName", parent.getName());
 		}
-		map.put("path", parent.getPath());
+		map.put("path", path);
 		map.put("code", code);
 		map.put("type", type);
 		map.put("typeName", OfficeTypeEnum.getEnumName(type));
@@ -101,6 +102,17 @@ public class Office extends DataEntity implements Serializable {
 		Office office = getInstance();
 		office.setId(id);
 		return office;
+	}
+
+	public TreeVO formatTreeData() {
+
+		TreeVO vo = new TreeVO();
+		vo.setId(id);
+		vo.setText(name);
+		if(null != parent){
+			vo.setParentId(parent.getId());	
+		}
+		return vo;
 	}
 
 	public Office getParent() {

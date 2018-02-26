@@ -31,8 +31,8 @@ public class OfficeInsertVO implements Serializable {
 	/**
 	 * 机构类型
 	 */
-	@NotBlank(message = "{office.type.NotBlank}")
-	private String type;
+	@NotBlank(message = "{office.type.NotNull}")
+	private Integer type;
 	/**
 	 * 联系地址
 	 */
@@ -53,6 +53,10 @@ public class OfficeInsertVO implements Serializable {
 	 * 邮箱
 	 */
 	private String email;
+	/**
+	 * 联系人
+	 */
+	private String contact;
 	/**
 	 * 排序
 	 */
@@ -82,11 +86,11 @@ public class OfficeInsertVO implements Serializable {
 		this.parentId = parentId;
 	}
 
-	public String getType() {
+	public Integer getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
 
@@ -138,11 +142,19 @@ public class OfficeInsertVO implements Serializable {
 		this.sort = sort;
 	}
 
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
 	@Override
 	public String toString() {
 		return "OfficeInsertVO [name=" + name + ", code=" + code + ", parentId=" + parentId + ", type=" + type
 				+ ", address=" + address + ", master=" + master + ", phone=" + phone + ", fax=" + fax + ", email="
-				+ email + ", sort=" + sort + "]";
+				+ email + ", contact=" + contact + ", sort=" + sort + "]";
 	}
 
 }

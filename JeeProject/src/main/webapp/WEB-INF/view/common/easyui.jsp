@@ -13,7 +13,6 @@
 <link href="${ctx}/assets/plugins/insdep/icon.css" rel="stylesheet" type="text/css">
 <link href="${ctx}/assets/plugins/insdep/reset.min.css" rel="stylesheet" type="text/css">
 <link href="${ctx}/assets/plugins/insdep/easyui_full.css" rel="stylesheet" type="text/css">
-<link href="${ctx}/assets/plugins/insdep/iconfont/iconfont.css" rel="stylesheet" type="text/css">
 
 <script src="${ctx}/assets/js/jquery-1.10.2.min.js"></script>
 <script src="${ctx}/assets/plugins/layer/layer.js" type="text/javascript"></script>

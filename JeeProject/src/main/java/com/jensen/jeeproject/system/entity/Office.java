@@ -1,6 +1,7 @@
 package com.jensen.jeeproject.system.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,10 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.google.common.collect.Maps;
 import com.jensen.jeeproject.common.entity.DataEntity;
 import com.jensen.jeeproject.common.enumeration.OfficeTypeEnum;
+import com.jensen.jeeproject.common.enumeration.SwitchEnum;
+import com.jensen.jeeproject.common.util.IdUtil;
+import com.jensen.jeeproject.system.vo.OfficeInsertVO;
+import com.jensen.jeeproject.system.vo.OfficeUpdateVO;
 import com.jensen.jeeproject.system.vo.TreeVO;
 
 @TableName(value = "t_office")
@@ -104,13 +109,53 @@ public class Office extends DataEntity implements Serializable {
 		return office;
 	}
 
+	public static Office getInstance(OfficeInsertVO vo) {
+
+		Office office = getInstance();
+		office.setId(IdUtil.getId());
+		office.setAddress(vo.getAddress());
+		office.setCode(vo.getCode());
+		office.setContact(vo.getContact());
+		office.setCreateDate(new Date());
+		office.setDelFlag(SwitchEnum.NO.getId());
+		office.setEmail(vo.getEmail());
+		office.setPhone(vo.getPhone());
+		office.setFax(vo.getFax());
+		office.setName(vo.getName());
+		office.setParent(getInstance(vo.getParentId()));
+		office.setType(vo.getType());
+		office.setSort(vo.getSort());
+		
+		return office;
+	}
+	
+	public static Office getInstance(OfficeUpdateVO vo){
+		
+		Office office = getInstance();
+		office.setId(vo.getId());
+		office.setAddress(vo.getAddress());
+		office.setCode(vo.getCode());
+		office.setContact(vo.getContact());
+		office.setDelFlag(SwitchEnum.NO.getId());
+		office.setEmail(vo.getEmail());
+		office.setPhone(vo.getPhone());
+		office.setFax(vo.getFax());
+		office.setName(vo.getName());
+		office.setParent(getInstance(vo.getParentId()));
+		office.setType(vo.getType());
+		office.setSort(vo.getSort());
+		office.setUpdateDate(new Date());
+		
+		return office;
+	}
+
 	public TreeVO formatTreeData() {
 
 		TreeVO vo = new TreeVO();
 		vo.setId(id);
 		vo.setText(name);
-		if(null != parent){
-			vo.setParentId(parent.getId());	
+		if (null != parent) {
+			vo.setParentId(parent.getId());
 		}
 		return vo;
 	}

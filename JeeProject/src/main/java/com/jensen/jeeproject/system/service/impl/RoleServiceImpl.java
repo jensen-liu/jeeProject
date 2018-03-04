@@ -11,7 +11,6 @@ import com.jensen.jeeproject.system.dao.RoleDao;
 import com.jensen.jeeproject.system.dao.RolePermissionDao;
 import com.jensen.jeeproject.system.dao.UserRoleDao;
 import com.jensen.jeeproject.system.entity.Role;
-import com.jensen.jeeproject.system.entity.User;
 import com.jensen.jeeproject.system.service.RoleService;
 
 @Service

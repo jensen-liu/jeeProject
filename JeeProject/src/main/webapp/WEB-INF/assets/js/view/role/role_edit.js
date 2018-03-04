@@ -1,13 +1,10 @@
 $(function() {
 	initTextBoxForName();
-	initTextBoxForCode();
-	initTextBoxForAddress();
-	initTextBoxForPhone();
-	initTextBoxForFax();
-	initTextBoxForEmail();
-	initTextBoxForContact();
-	initComboTreeForParentId();
+	initTextBoxForEnName();
+	initComboTreeForOffice();
 	initComboboxForType();
+	initComboboxForDataScope();
+	initTreeForPermission();
 	initNumberBoxForSort();
 	initForm();
 });
@@ -17,19 +14,14 @@ function initTextBoxForName() {
 		required : true
 	});
 }
-function initTextBoxForCode() {
-	$("#code").textbox({
+function initTextBoxForEnName() {
+	$("#enName").textbox({
 		width : 200,
 		required : true
 	});
 }
-function initTextBoxForAddress() {
-	$("#address").textbox({
-		width : 200
-	});
-}
-function initComboTreeForParentId() {
-	$('#parentId').combotree({
+function initComboTreeForOffice() {
+	$('#office').combotree({
 		width : 200,
 		url : officeTreeDataUrl,
 		required : true
@@ -42,27 +34,13 @@ function initComboboxForType() {
 		panelHeight : "auto"
 	});
 }
-function initTextBoxForPhone() {
-	$("#phone").textbox({
-		width : 200
+function initComboboxForDataScope() {
+	$("#dataScope").combobox({
+		width : 200,
+		editable : false,
+		panelHeight : "auto"
 	});
 }
-function initTextBoxForFax() {
-	$("#fax").textbox({
-		width : 200
-	});
-}
-function initTextBoxForEmail() {
-	$("#email").textbox({
-		width : 200
-	});
-}
-function initTextBoxForContact() {
-	$("#contact").textbox({
-		width : 200
-	});
-}
-
 function initNumberBoxForSort() {
 	$('#sort').numberbox({
 		min : 0,
@@ -70,33 +48,51 @@ function initNumberBoxForSort() {
 		width : 200
 	});
 }
-
+function initTreeForPermission() {
+	$('#permissionTree').tree({
+		url : permissionTreeDataUrl
+	});
+}
 function initForm() {
-	$('#addForm').form({
+	$('#editForm').form({
 		url : saveUrl,
 		novalidate : true,
 		onSubmit : function() {
 			$(this).form("enableValidation");
-			var flag = $("#addForm").form("validate");
+			var flag = $("#editForm").form("validate");
 			if (!flag) {
-				parent.enableAddSaveBtn();
+				parent.enableEditSaveBtn();
 				return false;
 			}
 		},
 		success : function(data) {
 			data = $.parseJSON(data);
 			if (data.result == 'ok') {
-				parent.closeAddDialog();
+				parent.closeEditDialog();
 				parent.loadList();
 			} else {
 				$.messager.alert('系统提示', data.response.msg, 'error');
 			}
-			parent.enableAddSaveBtn();
+			parent.enableEditSaveBtn();
 			$(this).form("disableValidation");
 		}
 	});
 }
 function save() {
-	parent.disableAddSaveBtn();
-	$('#addForm').form("submit");
+	parent.disableEditSaveBtn();
+	$('#editForm').form("submit");
+}
+/**
+ * 回填表单数据
+ */
+function loadForm(id) {
+	$.post(loadFormUrl, {
+		"id" : id
+	}, function(data) {
+		if (data.result == "ok") {
+			$("#editForm").form("load", data.response);
+		} else {
+			$.messager.alert('系统提示', data.response.msg, 'error');
+		}
+	}, "json");
 }

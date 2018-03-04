@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jensen.jeeproject.system.dao.RolePermissionDao">
+
+	<sql id="roleColumns">
+		rp.role_id AS "role.id",
+		rp.permission_id AS "permission.id"
+	</sql>
+
+	<insert id="insert" parameterType="Role">
+		<![CDATA[
+			insert into t_role_permission 
+				(role_id,permission_id)
+			values 
+				(#{role.id},#{permission.id})
+		]]>
+	</insert>
+
+
+	<update id="deleteByRole" parameterType="String">
+		<![CDATA[
+			delete from t_role_permission 
+		]]>
+		<where>
+			role_id=#{id}
+		</where>
+	</update>
+
+
+</mapper>

@@ -10,6 +10,7 @@ import com.jensen.jeeproject.common.entity.BaseEntity;
 import com.jensen.jeeproject.common.util.IdUtil;
 import com.jensen.jeeproject.system.vo.PermissionInsertVO;
 import com.jensen.jeeproject.system.vo.PermissionUpdateVO;
+import com.jensen.jeeproject.system.vo.TreeVO;
 
 @TableName("t_permission")
 public class Permission extends BaseEntity implements Serializable {
@@ -113,6 +114,17 @@ public class Permission extends BaseEntity implements Serializable {
 		map.put("sort", sort);
 
 		return map;
+	}
+
+	public TreeVO formatTreeData() {
+
+		TreeVO vo = new TreeVO();
+		vo.setId(id);
+		vo.setText(name);
+		if (null != parent) {
+			vo.setParentId(parent.getId());
+		}
+		return vo;
 	}
 
 	public Permission getParent() {

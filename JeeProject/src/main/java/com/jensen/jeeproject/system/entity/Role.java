@@ -11,6 +11,8 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.jensen.jeeproject.common.entity.DataEntity;
+import com.jensen.jeeproject.common.enumeration.RoleDataScopeEnum;
+import com.jensen.jeeproject.common.enumeration.RoleTypeEnum;
 import com.jensen.jeeproject.common.enumeration.SwitchEnum;
 import com.jensen.jeeproject.common.util.IdUtil;
 import com.jensen.jeeproject.system.vo.RoleInsertVO;
@@ -33,13 +35,21 @@ public class Role extends DataEntity implements Serializable {
 	 */
 	private String enName;
 	/**
-	 * 权限类型
+	 * 角色类型
 	 */
-	private String roleType;
+	private Integer type;
+	/**
+	 * 是否系统数据 1=是，0=否
+	 */
+	private Integer sysData;
 	/**
 	 * 数据范围
 	 */
 	private Integer dataScope;
+	/**
+	 * 排序
+	 */
+	private Integer sort;
 	/**
 	 * 分配资源
 	 */
@@ -58,14 +68,15 @@ public class Role extends DataEntity implements Serializable {
 		role.setDataScope(vo.getDataScope());
 		role.setDelFlag(SwitchEnum.NO.getId());
 		role.setEnName(vo.getEnName());
-		role.setOffice(Office.getInstance(vo.getOfficeId()));
-		role.setRoleType(vo.getRoleType());
+		role.setOffice(Office.getInstance(vo.getOffice()));
+		role.setType(vo.getType());
+		role.setSort(vo.getSort());
 		List<Permission> permissions = Lists.newArrayList();
 		for (String id : vo.getPermissions().split(",")) {
 			permissions.add(Permission.getInstance(id));
 		}
 		role.setPermissionList(permissions);
-
+		role.setSysData(SwitchEnum.NO.getId());
 		return role;
 	}
 
@@ -77,14 +88,14 @@ public class Role extends DataEntity implements Serializable {
 		role.setEnName(vo.getEnName());
 		role.setUpdateDate(new Date());
 		role.setDataScope(vo.getDataScope());
-		role.setOffice(Office.getInstance(vo.getOfficeId()));
-		role.setRoleType(vo.getRoleType());
+		role.setOffice(Office.getInstance(vo.getOffice()));
+		role.setType(vo.getType());
 		List<Permission> permissions = Lists.newArrayList();
 		for (String id : vo.getPermissions().split(",")) {
 			permissions.add(Permission.getInstance(id));
 		}
 		role.setPermissionList(permissions);
-
+		role.setSort(vo.getSort());
 		return role;
 	}
 
@@ -93,11 +104,18 @@ public class Role extends DataEntity implements Serializable {
 		Map<String, Object> map = Maps.newHashMap();
 		map.put("id", id);
 		map.put("name", name);
-		map.put("officeId", office.getId());
+		if (null != office) {
+			map.put("office", office.getId());
+			map.put("officeName", office.getName());
+		}
 		map.put("enName", enName);
-		map.put("roleType", roleType);
+		map.put("type", type);
+		map.put("typeText", RoleTypeEnum.getEnumName(type));
+		map.put("sysData", sysData);
+		map.put("sysDataText", SwitchEnum.getEnumText(sysData));
 		map.put("dataScope", dataScope);
-
+		map.put("dataScopeText", RoleDataScopeEnum.getEnumText(dataScope));
+		map.put("sort", sort);
 		return map;
 	}
 
@@ -125,12 +143,12 @@ public class Role extends DataEntity implements Serializable {
 		this.enName = enName;
 	}
 
-	public String getRoleType() {
-		return roleType;
+	public Integer getType() {
+		return type;
 	}
 
-	public void setRoleType(String roleType) {
-		this.roleType = roleType;
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 	public Integer getDataScope() {
@@ -147,6 +165,22 @@ public class Role extends DataEntity implements Serializable {
 
 	public void setPermissionList(List<Permission> permissionList) {
 		PermissionList = permissionList;
+	}
+
+	public Integer getSysData() {
+		return sysData;
+	}
+
+	public void setSysData(Integer sysData) {
+		this.sysData = sysData;
+	}
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
 	}
 
 }

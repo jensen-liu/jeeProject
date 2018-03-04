@@ -4,6 +4,9 @@ import static com.jensen.jeeproject.common.util.PropUtil.*;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import java.util.Iterator;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -14,12 +17,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONArray;
+import com.google.common.collect.Lists;
 import com.jensen.jeeproject.common.exception.ServiceException;
 import com.jensen.jeeproject.common.util.ResponseResult;
+import com.jensen.jeeproject.system.entity.Office;
 import com.jensen.jeeproject.system.entity.Permission;
 import com.jensen.jeeproject.system.service.PermissionService;
 import com.jensen.jeeproject.system.vo.PermissionInsertVO;
 import com.jensen.jeeproject.system.vo.PermissionUpdateVO;
+import com.jensen.jeeproject.system.vo.TreeVO;
 
 /**
  * 资源权限Controller类
@@ -58,9 +65,29 @@ public class PermissionController {
 	@RequestMapping("treeDate")
 	public String treeDate() {
 
-		ResponseResult result = new ResponseResult();
+		List<TreeVO> voList = Lists.newArrayList();
+		List<Permission> permissions = permService.getList();
 
-		return null;
+		for (Permission permission : permissions) {
+			voList.add(permission.formatTreeData());
+		}
+
+		for (TreeVO vo : voList) {
+			for (TreeVO vo2 : voList) {
+				if (vo.getId().equals(vo2.getParentId())) {
+					vo.getChildren().add(vo2);
+				}
+			}
+		}
+
+		Iterator<TreeVO> iterator = voList.iterator();
+		while (iterator.hasNext()) {
+			TreeVO vo = iterator.next();
+			if (isNotBlank(vo.getParentId())) {
+				iterator.remove();
+			}
+		}
+		return JSONArray.toJSONString(voList);
 	}
 
 	@ResponseBody

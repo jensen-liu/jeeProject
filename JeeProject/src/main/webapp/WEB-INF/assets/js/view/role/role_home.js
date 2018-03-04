@@ -2,15 +2,16 @@ $(function() {
 
 	initSearchItem();
 	initDatagrid();
-	initTree();
 	initBtnForAdd();
+	initBtnForSearch();
 	initDialogForAdd();
 	initDialogForEdit();
+	initForm();
 });
 
 function initDatagrid() {
 	$('#list').datagrid({
-		url : officeListUrl,
+		url : roleListUrl,
 		fit : true,
 		singleSelect : true,
 		fitColumns : true,
@@ -25,22 +26,27 @@ function initDatagrid() {
 			hidden : true
 		}, {
 			field : "name",
-			title : "机构名称",
+			title : "角色名称",
 			halign : "center",
 			width : 60
 		}, {
-			field : "code",
-			title : '机构代码',
+			field : "enName",
+			title : '英文名称',
 			halign : "center",
 			width : 80
 		}, {
-			field : "typeName",
-			title : '机构类型',
+			field : "typeText",
+			title : '权限类型',
 			halign : "center",
 			width : 80
 		}, {
-			field : 'path',
-			title : '机构路径',
+			field : 'officeName',
+			title : '所属机构',
+			halign : "center",
+			width : 80
+		}, {
+			field : 'sysDataText',
+			title : '系统数据',
 			halign : "center",
 			width : 80
 		}, {
@@ -110,10 +116,8 @@ function initDialogForEdit() {
 		modal : true,
 		constrain : true,
 		maximizable : true,
-		onBeforeOpen : function() {
-		},
-		onClose : function() {
-		},
+		onBeforeOpen : function() {},
+		onClose : function() {},
 		buttons : [ {
 			id : 'addSaveBtn',
 			text : '保存',
@@ -132,24 +136,17 @@ function initDialogForEdit() {
 }
 
 function initSearchItem() {
-	$("input[name='search_code']").textbox({
-		label : "机构编码：",
+	$("#search_name").textbox({
+		label : "角色名称：",
 		labelWidth : "70",
 		width : "200"
 	});
 
-	$("input[name='search_name']").textbox({
-		label : "机构名称：",
+	$("#search_type").textbox({
+		label : "角色类型：",
 		labelWidth : "70",
 		width : "200"
 	});
-
-	$("input[name='search_parentId']").textbox({
-		label : "上级机构：",
-		labelWidth : "70",
-		width : "200"
-	});
-
 }
 
 function initBtnForAdd() {
@@ -161,14 +158,21 @@ function initBtnForAdd() {
 		}
 	});
 }
-
+function initBtnForSearch() {
+	$("#searchBtn").linkbutton({
+		iconCls : 'icon-search',
+		onClick : function() {
+			$("#searchForm").form("submit");
+		}
+	});
+}
 function initBtnForOperation() {
 	$('.button-red').linkbutton({
 		width : 45,
 		height : 20,
 		onClick : function() {
 			var options = $(this).linkbutton("options");
-			deleteOffice(options.id);
+			deleteRole(options.id);
 		}
 	});
 	$('.button-blue').linkbutton({
@@ -180,16 +184,15 @@ function initBtnForOperation() {
 		}
 	});
 }
-
-function initTree() {
-	$('#officeTree').tree({
-		url : officeTreeDataUrl,
-		onClick : function(node) {
-			alert(node.id);
+function initForm() {
+	$("#searchForm").form({
+		onSubmit : function(param) {
+			param.search_name = $("#search_name").textbox("getValue");
+			$('#list').datagrid("load", param);
+			return false;
 		}
 	});
 }
-
 function formatOperation(value, row, index) {
 	var operation = "<a href='#' class='button-red' id='" + row.id + "'>删除</a> ";
 	operation += "<a href='#' class='button-blue' id='" + row.id + "'>编辑</a>";
@@ -197,33 +200,23 @@ function formatOperation(value, row, index) {
 }
 
 
-function deleteOffice(id) {
+function deleteRole(id) {
 	$.messager.confirm('系统提示', '是否确认删除？', function(r) {
 		if (r) {
-			var node = $("#officeTree").tree("find", id);
-			var children = $("#officeTree").tree("getChildren", node.target);
-			if (children.length > 0) {
-				$.messager.alert('系统提示', '该机构下存在子机构，无法删除!', 'info');
-			} else {
-				$.post(deleteUrl, {
-					"id" : id
-				}, function(data) {
-					if (data.result == 'ok') {
-						loadList() ;
-					} else {
-						$.messager.alert('系统提示', data.response.msg, 'info');
-					}
-				}, "json");
-			}
+			$.post(deleteUrl, {
+				"id" : id
+			}, function(data) {
+				if (data.result == 'ok') {
+					loadList() ;
+				} else {
+					$.messager.alert('系统提示', data.response.msg, 'info');
+				}
+			}, "json");
 		}
 	});
 }
 function loadList() {
 	$("#list").datagrid("load");
-}
-
-function reloadTreeData() {
-	$("#officeTree").tree("reload");
 }
 
 function disableAddSaveBtn() {

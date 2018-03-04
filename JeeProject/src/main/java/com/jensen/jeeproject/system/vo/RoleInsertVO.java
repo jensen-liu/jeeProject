@@ -8,7 +8,7 @@ public class RoleInsertVO implements Serializable {
 	/**
 	 * 归属机构
 	 */
-	private String officeId;
+	private String office;
 	/**
 	 * 角色名称
 	 */
@@ -20,7 +20,7 @@ public class RoleInsertVO implements Serializable {
 	/**
 	 * 权限类型
 	 */
-	private String roleType;
+	private Integer type;
 	/**
 	 * 数据范围
 	 */
@@ -29,13 +29,17 @@ public class RoleInsertVO implements Serializable {
 	 * 分配权限
 	 */
 	private String permissions;
+	/**
+	 * 排序
+	 */
+	private Integer sort;
 
-	public String getOfficeId() {
-		return officeId;
+	public String getOffice() {
+		return office;
 	}
 
-	public void setOfficeId(String officeId) {
-		this.officeId = officeId;
+	public void setOffice(String office) {
+		this.office = office;
 	}
 
 	public String getName() {
@@ -54,12 +58,12 @@ public class RoleInsertVO implements Serializable {
 		this.enName = enName;
 	}
 
-	public String getRoleType() {
-		return roleType;
+	public Integer getType() {
+		return type;
 	}
 
-	public void setRoleType(String roleType) {
-		this.roleType = roleType;
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 	public Integer getDataScope() {
@@ -78,10 +82,18 @@ public class RoleInsertVO implements Serializable {
 		this.permissions = permissions;
 	}
 
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
+
 	@Override
 	public String toString() {
-		return "RoleInsertVO [officeId=" + officeId + ", name=" + name + ", enName=" + enName + ", roleType=" + roleType
-				+ ", dataScope=" + dataScope + ", permissions=" + permissions + "]";
+		return "RoleInsertVO [office=" + office + ", name=" + name + ", enName=" + enName + ", type=" + type
+				+ ", dataScope=" + dataScope + ", permissions=" + permissions + ", sort=" + sort + "]";
 	}
 
 }

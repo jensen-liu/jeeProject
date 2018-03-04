@@ -6,7 +6,6 @@ import java.util.Map;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.jensen.jeeproject.common.exception.ServiceException;
 import com.jensen.jeeproject.system.entity.Office;
-import com.jensen.jeeproject.system.entity.User;
 
 public interface OfficeService {
 

@@ -37,19 +37,29 @@ public enum RoleDataScopeEnum {
 	DATA_SCOPE_CUSTOM(7, "");
 
 	private Integer id;
-	private String name;
+	private String text;
 
-	RoleDataScopeEnum(Integer id, String name) {
+	RoleDataScopeEnum(Integer id, String text) {
 		this.id = id;
-		this.name = name;
+		this.text = text;
 	}
 
 	public Integer getId() {
 		return id;
 	}
 
-	public String getName() {
-		return name;
+	public String getText() {
+		return text;
+	}
+
+	public static String getEnumText(Integer id) {
+
+		for (RoleDataScopeEnum e : values()) {
+			if (e.getId().equals(id)) {
+				return e.getText();
+			}
+		}
+		return "";
 	}
 
 }

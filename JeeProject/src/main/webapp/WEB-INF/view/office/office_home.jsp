@@ -42,8 +42,6 @@
 				<div id="toolBar" style="display: none">
 					<%-- 添加按钮 --%>
 					<a id="addBtn" href="#" class="easyui-linkbutton">添加</a>
-					<%-- 修改按钮 --%>
-					<a id="editBtn" href="#" class="easyui-linkbutton">修改</a>
 				</div>
 				<div id="addDialog"></div>
 				<div id="editDialog"></div>

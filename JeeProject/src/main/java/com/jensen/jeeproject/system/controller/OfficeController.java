@@ -24,11 +24,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.jensen.jeeproject.common.cache.OfficeCache;
 import com.jensen.jeeproject.common.exception.ServiceException;
+import com.jensen.jeeproject.common.util.CacheUtils;
 import com.jensen.jeeproject.common.util.PropUtil;
 import com.jensen.jeeproject.common.util.ResponseResult;
 import com.jensen.jeeproject.system.entity.Office;
-import com.jensen.jeeproject.system.entity.User;
 import com.jensen.jeeproject.system.service.OfficeService;
 import com.jensen.jeeproject.system.vo.OfficeInsertVO;
 import com.jensen.jeeproject.system.vo.OfficeUpdateVO;
@@ -135,28 +136,7 @@ public class OfficeController {
 	@RequestMapping("treeData")
 	public String treeData() {
 
-		List<TreeVO> voList = Lists.newArrayList();
-		List<Office> offices = officeService.getList();
-
-		for (Office office : offices) {
-			voList.add(office.formatTreeData());
-		}
-
-		for (TreeVO vo : voList) {
-			for (TreeVO vo2 : voList) {
-				if (vo.getId().equals(vo2.getParentId())) {
-					vo.getChildren().add(vo2);
-				}
-			}
-		}
-
-		Iterator<TreeVO> iterator = voList.iterator();
-		while (iterator.hasNext()) {
-			TreeVO vo = iterator.next();
-			if (isNotBlank(vo.getParentId())) {
-				iterator.remove();
-			}
-		}
+		List<TreeVO> voList = OfficeCache.getTreeDate();
 		return JSONArray.toJSONString(voList);
 	}
 
@@ -165,7 +145,16 @@ public class OfficeController {
 	public String insert(OfficeInsertVO vo) {
 
 		ResponseResult result = new ResponseResult();
-		return result.toSuccessString();
+		try {
+			Office office = Office.getInstance(vo);
+			officeService.insert(office);
+			return result.toSuccessString();
+		} catch (ServiceException e) {
+			return result.toFailString(e.getMessage());
+		} catch (Exception e) {
+			LOGGER.error("添加组织机构异常：{}", vo.toString(), e);
+			return result.toFailString(getPropMessage("exception"));
+		}
 	}
 
 	@ResponseBody
@@ -173,7 +162,16 @@ public class OfficeController {
 	public String update(OfficeUpdateVO vo) {
 
 		ResponseResult result = new ResponseResult();
-		return result.toSuccessString();
+		try {
+			Office office = Office.getInstance(vo);
+			officeService.update(office);
+			return result.toSuccessString();
+		} catch (ServiceException e) {
+			return result.toFailString(e.getMessage());
+		} catch (Exception e) {
+			LOGGER.error("修改组织机构异常：{}", vo.toString(), e);
+			return result.toFailString(getPropMessage("exception"));
+		}
 	}
 
 	@ResponseBody

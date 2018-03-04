@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.jensen.jeeproject.common.cache.OfficeCache;
 import com.jensen.jeeproject.common.enumeration.SwitchEnum;
 import com.jensen.jeeproject.common.exception.ServiceException;
 import com.jensen.jeeproject.common.util.PropUtil;
@@ -58,13 +59,18 @@ public class OfficeServiceImpl implements OfficeService {
 	@Override
 	public int insert(Office office) throws ServiceException {
 
-		return officeDao.insert(office);
+		int count = officeDao.insert(office);
+		OfficeCache.clear();
+		return count;
+
 	}
 
 	@Override
 	public int update(Office office) throws ServiceException {
-
-		return officeDao.update(office);
+		
+		int count = officeDao.update(office);
+		OfficeCache.clear();
+		return count;
 	}
 
 	@Override

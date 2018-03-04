@@ -1,5 +1,6 @@
 package com.jensen.jeeproject.common.util;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -37,4 +38,16 @@ public class SpringContextUtil implements ApplicationContextAware {
 		return applicationContext.getBean(name);
 	}
 
+	/**
+	 * 从静态变量applicationContext中取得Bean, 自动转型为所赋值对象的类型.
+	 */
+	public static <T> T getBean(Class<T> requiredType) {
+		assertContextInjected();
+		return applicationContext.getBean(requiredType);
+	}
+
+	private static void assertContextInjected() {
+		Validate.validState(applicationContext != null,
+				"applicaitonContext属性未注入, 请在applicationContext.xml中定义SpringContextHolder.");
+	}
 }

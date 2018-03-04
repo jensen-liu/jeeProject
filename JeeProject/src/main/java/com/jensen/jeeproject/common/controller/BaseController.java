@@ -6,9 +6,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
-import com.jensen.jeeproject.common.util.PropertyConfigurer;
-import com.jensen.jeeproject.common.util.SpringContextUtil;
-
 public abstract class BaseController {
 
 	@InitBinder

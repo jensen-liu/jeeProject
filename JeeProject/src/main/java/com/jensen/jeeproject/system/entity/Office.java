@@ -80,6 +80,7 @@ public class Office extends DataEntity implements Serializable {
 
 		Map<String, Object> map = Maps.newHashMap();
 		map.put("id", id);
+		map.put("name", name);
 		if (null != parent) {
 			map.put("parentId", parent.getId());
 			map.put("parentName", parent.getName());

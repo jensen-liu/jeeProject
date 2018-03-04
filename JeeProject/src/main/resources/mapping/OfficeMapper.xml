@@ -104,7 +104,7 @@
 				(id,name,code,parent_id,type,address,contact,phone,fax,email,sort,create_date,create_by,del_flag)
 			values 
 				(#{id},#{name},#{code},#{parent.id},#{type},#{address},#{contact},#{phone},#{fax},#{email},#{sort},
-				#{create_date},#{create_by},#{del_flag})
+				#{createDate},#{createBy.id},#{delFlag})
 		]]>
 	</insert>
 
@@ -121,11 +121,11 @@
 			fax=#{fax},
 			email=#{email},
 			sort=#{sort},
-			create_date=#{create_date},
-			create_by=#{create_by}
+			create_date=#{createDate},
+			create_by=#{createBy.id}
 		]]>
 		<where>
-			where id=#{id}
+			id=#{id}
 		</where>
 	</update>
 

@@ -145,19 +145,19 @@ $(function() {
 				url : '/jeeProject/office/toHome'
 			}, {
 				id : '42',
-				text : '订单排产',
+				text : '角色管理',
 				icon : 'icon-glass',
-				url : '/index'
+				url : '/jeeProject/role/toHome'
 			}, {
 				id : '43',
-				text : '订单撤排',
+				text : '用户管理',
 				icon : 'icon-glass',
-				url : '/index'
+				url : '/jeeProject/user/toHome'
 			}, {
 				id : '44',
-				text : '订单HOLD',
+				text : '权限管理',
 				icon : 'icon-glass',
-				url : '/index'
+				url : '/jeeProject/permission/toHome'
 			}, {
 				id : '45',
 				text : '订单删除',

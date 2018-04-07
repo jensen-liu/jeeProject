@@ -15,7 +15,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.jensen.jeeproject.common.entity.DataEntity;
 import com.jensen.jeeproject.common.enumeration.SwitchEnum;
-import com.jensen.jeeproject.common.enumeration.UserStateEnum;
 import com.jensen.jeeproject.system.vo.UserInsertVO;
 import com.jensen.jeeproject.system.vo.UserUpdateVO;
 

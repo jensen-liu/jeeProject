@@ -4,7 +4,7 @@
 <configuration>
 	<settings>
 		<!-- mybatis控制台LOG输出
-		<setting name="logImpl" value="LOG4J2" />
+		<setting name="logImpl" value="LOG4J" />
 		 -->
 		<setting name="lazyLoadingEnabled" value="true" />
 		<setting name="aggressiveLazyLoading" value="false" />
@@ -14,5 +14,6 @@
 		<typeAlias type="com.jensen.jeeproject.system.entity.Role" alias="Role"/>
 		<typeAlias type="com.jensen.jeeproject.system.entity.Office" alias="Office"/>
 		<typeAlias type="com.jensen.jeeproject.system.entity.Permission" alias="Permission"/>
+		<typeAlias type="com.jensen.jeeproject.common.entity.Area" alias="Area"/>
 	</typeAliases>
 </configuration>

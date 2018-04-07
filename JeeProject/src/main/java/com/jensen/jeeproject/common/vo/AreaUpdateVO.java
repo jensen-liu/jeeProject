@@ -1,39 +1,47 @@
-package com.jensen.jeeproject.common.entity;
+package com.jensen.jeeproject.common.vo;
 
 import java.io.Serializable;
 
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.jensen.jeeproject.system.vo.TreeVO;
+import javax.validation.constraints.NotNull;
 
-/**
- * 区域类
- * 
- * @author Jensen
- *
- */
-@TableName(value = "t_area")
-public class Area extends BaseEntity implements Serializable {
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
+public class AreaUpdateVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 区域ID
+	 */
+	@NotBlank(message = "{area.id.NotBlank}")
+	private String id;
 	/**
 	 * 区域名称
 	 */
+	@NotBlank(message = "{area.name.NotBlank}")
+	@Length(max = 50, message = "{area.name.Length}")
 	private String name;
 	/**
 	 * 区域编码
 	 */
+	@NotBlank(message = "{area.code.NotBlank}")
+	@Length(max = 10, message = "{area.code.Length}")
 	private String code;
 	/**
 	 * 上级ID
 	 */
-	private Area parent;
+	private String parentId;
 	/**
 	 * 区域类型
 	 */
+	@NotNull(message = "{area.type.NotNull}")
 	private Integer type;
 	/**
 	 * 区号
 	 */
+	@NotBlank(message = "{area.cityCode.NotBlank}")
+	@Length(max = 10, message = "{area.cityCode.Length}")
 	private String cityCode;
 	/**
 	 * 邮编
@@ -54,30 +62,14 @@ public class Area extends BaseEntity implements Serializable {
 	/**
 	 * 拼音
 	 */
+	@Length(max = 100, message = "{area.phonics.Length}")
 	private String phonics;
 	/**
 	 * 排序
 	 */
+	@NotBlank(message = "{area.sort.NotBlank}")
+	@Length(max = 2147483647, message = "{area.sort.Length}")
 	private Integer sort;
-
-	public Area() {
-
-	}
-
-	public Area(String id) {
-		this.id = id;
-	}
-
-	public TreeVO formatTreeData() {
-
-		TreeVO vo = new TreeVO();
-		vo.setId(id);
-		vo.setText(name);
-		if (null != parent) {
-			vo.setParentId(parent.getId());
-		}
-		return vo;
-	}
 
 	public String getName() {
 		return name;
@@ -93,6 +85,14 @@ public class Area extends BaseEntity implements Serializable {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public String getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
 	}
 
 	public Integer getType() {
@@ -149,14 +149,6 @@ public class Area extends BaseEntity implements Serializable {
 
 	public void setPhonics(String phonics) {
 		this.phonics = phonics;
-	}
-
-	public Area getParent() {
-		return parent;
-	}
-
-	public void setParent(Area parent) {
-		this.parent = parent;
 	}
 
 	public Integer getSort() {

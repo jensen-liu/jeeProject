@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jensen.jeeproject.common.dao.AreaDao">
+
+	<sql id="areaColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.code AS "code",
+		a.type AS "type",
+		a.parent_id AS "parent.id",
+		p.name AS "parent.name",
+		p.code AS "parent.code",
+		a.city_code AS "cityCode",
+		a.post_code AS "postCode",
+		a.merger_name AS "mergerName",
+		a.lng AS "lng",
+		a.lat AS "lat",
+		a.phonics AS "phonics",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.delete_date AS "deleteDate",
+		a.create_by AS "createBy",
+		a.update_by AS "updateBy",
+		a.sort AS "sort"
+	</sql>
+
+	<sql id="areaJoins">
+		LEFT JOIN t_area p on a.parent_id = p.id
+	</sql>
+
+	<select id="getArea" resultType="Area" parameterType="String">
+		select
+
+		<include refid="areaColumns"></include>
+
+		from t_area a
+
+		<include refid="areaJoins"></include>
+
+		<where>
+			a.id=#{id} AND a.del_flag = 0
+		</where>
+	</select>
+
+
+	<select id="list" resultType="Area" parameterType="Map">
+		select
+
+		<include refid="areaColumns"></include>
+
+		from t_area a
+
+		<include refid="areaJoins"></include>
+
+		<where>
+			a.del_flag = 0
+		</where>
+		
+		order by sort
+	</select>
+
+	<insert id="insert" parameterType="Area">
+		<![CDATA[
+			insert into t_area 
+				(id,name,code,parent_id,type,city_code,post_code,merger_name,lng,lat,phonics,create_date,create_by,del_flag,sort)
+			values 
+				(#{id},#{name},#{code},#{parent.id},#{type},#{cityCode},#{postCode},#{mergerName},#{lng},#{lat},#{phonics},
+				#{createDate},#{createBy.id},#{delFlag},#{sort})
+		]]>
+	</insert>
+
+	<update id="update" parameterType="Area">
+		<![CDATA[
+			update t_area set 
+			id = #{id},
+			name=#{name},
+			code=#{code},
+			parent_id=#{parent.id},
+			type=#{type},
+			city_code=#{cityCode},
+			post_code=#{postCode},
+			merger_name=#{mergerName},
+			lng=#{lng},
+			lat=#{lat},
+			phonics=#{phonics},
+			create_date=#{createDate},
+			create_by=#{createBy.id},
+			del_flag=#{delFlag},
+			sort=#{sort}
+		]]>
+		<where>
+			id=#{id}
+		</where>
+	</update>
+
+	<update id="remove" parameterType="String">
+		<![CDATA[
+			update t_area set del_flag = #{delFlag}, delete_date = #{deleteDate}
+		]]>
+		<where>
+			id=#{id}
+		</where>
+	</update>
+
+
+</mapper>

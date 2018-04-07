@@ -4,7 +4,6 @@ import static com.jensen.jeeproject.common.util.PropUtil.getPropMessage;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +25,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.jensen.jeeproject.common.cache.OfficeCache;
 import com.jensen.jeeproject.common.exception.ServiceException;
-import com.jensen.jeeproject.common.util.CacheUtils;
 import com.jensen.jeeproject.common.util.PropUtil;
 import com.jensen.jeeproject.common.util.ResponseResult;
 import com.jensen.jeeproject.system.entity.Office;
@@ -94,7 +92,7 @@ public class OfficeController {
 
 	@ResponseBody
 	@RequestMapping("select")
-	public String select(String id) {
+	public String getOffice(String id) {
 
 		ResponseResult result = new ResponseResult();
 		if (isBlank(id)) {
@@ -112,7 +110,7 @@ public class OfficeController {
 
 	@ResponseBody
 	@RequestMapping("selectAll")
-	public String selectAll(HttpServletRequest request, @RequestParam(defaultValue = "1", name = "page") Integer page,
+	public String list(HttpServletRequest request, @RequestParam(defaultValue = "1", name = "page") Integer page,
 			@RequestParam(defaultValue = "20", name = "pageSize") Integer pageSize,
 			@RequestParam(defaultValue = "sort", name = "sort") String sort,
 			@RequestParam(defaultValue = "desc", name = "order") String orde) {

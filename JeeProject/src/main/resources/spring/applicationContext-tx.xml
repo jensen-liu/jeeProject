@@ -24,6 +24,7 @@
 			<tx:method name="add*" propagation="REQUIRED" rollback-for="Exception"/>
 			<tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
 			<tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="list*" propagation="SUPPORTS" read-only="true" />
 			<tx:method name="find*" propagation="SUPPORTS" read-only="true" />
 			<tx:method name="select*" propagation="SUPPORTS" read-only="true" />
 			<tx:method name="show*" propagation="SUPPORTS" read-only="true" />

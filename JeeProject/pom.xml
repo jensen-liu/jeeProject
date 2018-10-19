@@ -16,7 +16,7 @@
 		<!-- mybatis plus版本号 -->
 		<mybatis-plus.version>1.4.9</mybatis-plus.version>
 		<velocity.version>1.7</velocity.version>
-		<jackson.version>2.7.4</jackson.version>
+		<jackson.version>2.9.6</jackson.version>
 		<!-- shiro版本号 -->
 		<shiro.version>1.4.0</shiro.version>
 		<javaee-api.version>7.0</javaee-api.version>
